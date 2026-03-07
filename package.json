@@ -1,0 +1,22 @@
+{
+  "name": "browserhomescreen",
+  "version": "0.0.1",
+  "private": true,
+  "homepage": "https://malikcornet.github.io/BrowserHomescreen",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "devDependencies": {
+    "gh-pages": "^6.3.0",
+    "vite": "^5.0.0",
+    "@vitejs/plugin-react": "^3.0.0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
