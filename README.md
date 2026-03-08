@@ -1,3 +1,21 @@
+# BrowserHomescreen
+
+## Project Structure
+
+```text
+src/
+  app/                    # app shell and top-level composition
+  pages/                  # route-level pages
+  features/               # feature modules (desktop, taskbar, programs, window manager)
+  entities/               # domain entities (filesystem model + UI)
+  data/                   # static seed data / fixtures
+  shared/                 # generic shared code (UI, utils)
+```
+
+Architecture and dependency rules are documented in `src/ARCHITECTURE.md`.
+
+---
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.

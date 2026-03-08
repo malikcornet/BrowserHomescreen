@@ -1,0 +1,11 @@
+.windowRegion {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  padding: 6px;
+}
+
+.windowRegion > * {
+  pointer-events: auto;
+}

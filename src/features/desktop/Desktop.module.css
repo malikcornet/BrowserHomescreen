@@ -1,0 +1,20 @@
+.desktop {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  background: #2f6ea7;
+  overflow: hidden;
+}
+
+.iconRegion {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 86px;
+  grid-template-rows: repeat(auto-fill, 96px);
+  align-content: start;
+  justify-content: start;
+}
