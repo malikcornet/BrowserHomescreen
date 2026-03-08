@@ -1,0 +1,14 @@
+.screen {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.desktopArea {
+  flex: 1;
+}
+
+.taskbarArea {
+  flex: 0 0 60px;
+  background-color: blue;
+}

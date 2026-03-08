@@ -1,0 +1,11 @@
+.desktop {
+  height: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 86px;
+  grid-template-rows: repeat(auto-fill, 96px);
+  align-content: start;
+  justify-content: start;
+  background-color: #008689;
+}
