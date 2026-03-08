@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import {
   isDirectoryItem,
   isFileItem,
@@ -202,6 +202,33 @@ const createCollapsedSetFromPaths = (
   return collapsedDirectories;
 };
 
+const findDirectoryChainToItem = (
+  rootDirectory: DirectoryItem,
+  targetItem: FileSystemItemBase,
+): DirectoryItem[] | null => {
+  if (rootDirectory === targetItem) {
+    return [rootDirectory];
+  }
+
+  if (rootDirectory.children.includes(targetItem)) {
+    return [rootDirectory];
+  }
+
+  for (const child of rootDirectory.children) {
+    if (!isDirectoryItem(child)) {
+      continue;
+    }
+
+    const childChain = findDirectoryChainToItem(child, targetItem);
+
+    if (childChain) {
+      return [rootDirectory, ...childChain];
+    }
+  }
+
+  return null;
+};
+
 function DirectoryTreeView({
   rootDirectory,
   currentDirectory,
@@ -217,6 +244,28 @@ function DirectoryTreeView({
       ? createCollapsedSetFromPaths(rootDirectory, initialCollapsedPaths)
       : createInitialCollapsedSet(rootDirectory, currentDirectory),
   );
+
+  const editingDirectoryChain = useMemo(() => {
+    if (!editingItem) {
+      return [] as DirectoryItem[];
+    }
+
+    return findDirectoryChainToItem(rootDirectory, editingItem) ?? [];
+  }, [editingItem, rootDirectory]);
+
+  const effectiveCollapsedDirectories = useMemo(() => {
+    if (editingDirectoryChain.length === 0) {
+      return collapsedDirectories;
+    }
+
+    const nextSet = new Set(collapsedDirectories);
+
+    for (const directory of editingDirectoryChain) {
+      nextSet.delete(directory);
+    }
+
+    return nextSet;
+  }, [collapsedDirectories, editingDirectoryChain]);
 
   const toggleDirectory = (directory: DirectoryItem) => {
     setCollapsedDirectories((previousSet) => {
@@ -243,7 +292,7 @@ function DirectoryTreeView({
     const childDirectories = directory.children.filter(isDirectoryItem);
     const childFiles = directory.children.filter(isFileItem);
     const hasChildren = childDirectories.length > 0 || childFiles.length > 0;
-    const isCollapsed = collapsedDirectories.has(directory);
+    const isCollapsed = effectiveCollapsedDirectories.has(directory);
     const isSelected = directory === currentDirectory;
     const isEditingDirectory = editingItem === directory;
     const rowStyle = { "--tree-depth": depth } as CSSProperties;

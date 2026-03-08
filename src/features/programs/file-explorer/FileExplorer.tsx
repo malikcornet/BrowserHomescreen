@@ -135,6 +135,9 @@ function FileExplorer({
     });
   };
 
+  const treeEditingItem = !isSidebarCollapsed ? editingItem : null;
+  const gridEditingItem = isSidebarCollapsed ? editingItem : null;
+
   return (
     <ProgramSurface className={programStyles.programParent} getContextMenuItems={buildFileExplorerMenuItems}>
       <div className={styles.explorerRoot}>
@@ -180,7 +183,7 @@ function FileExplorer({
                 onDirectorySelect={navigateToDirectory}
                 initialCollapsedPaths={initialCollapsedPaths}
                 onCollapsedPathsChange={handleCollapsedPathsChange}
-                editingItem={editingItem}
+                editingItem={treeEditingItem}
                 onEditingSubmit={handleEditingSubmit}
                 onEditingCancel={handleEditingCancel}
               />
@@ -191,7 +194,7 @@ function FileExplorer({
             <FileSystemItemGrid
               items={directoryItem.children}
               onDirectoryOpen={(nextDirectory) => navigateToDirectory(nextDirectory)}
-              editingItem={editingItem}
+              editingItem={gridEditingItem}
               onEditingSubmit={handleEditingSubmit}
               onEditingCancel={handleEditingCancel}
             />
