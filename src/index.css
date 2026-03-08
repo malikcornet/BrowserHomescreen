@@ -5,14 +5,20 @@ body,
 }
 
 :root {
-	--xp-blue-1: #245edb;
-	--xp-blue-2: #1c4fb8;
-	--xp-blue-3: #0f2f8c;
-	--xp-taskbar-top: #3c89f7;
-	--xp-taskbar-bottom: #1d56ce;
-	--xp-window-border: #08318f;
-	--xp-window-frame: #5f9dff;
-	--xp-text: #0f1724;
+	--xp-accent-1: #8e97c5;
+	--xp-accent-2: #6f79ab;
+	--xp-accent-3: #596293;
+	--xp-silver-1: #f4f5fb;
+	--xp-silver-2: #dee2f0;
+	--xp-silver-3: #c2c8dc;
+	--xp-silver-4: #9ca5c0;
+	--xp-taskbar-top: #cfd4e5;
+	--xp-taskbar-bottom: #9ca5c0;
+	--xp-window-border: #747d9f;
+	--xp-window-frame: #d9deed;
+	--xp-text: #23283a;
+	--xp-glow-pink: #efc9f6;
+	--xp-glow-cyan: #c9ebff;
 }
 
 * {
@@ -24,4 +30,5 @@ body,
 body {
 	font-family: Tahoma, "Segoe UI", "Trebuchet MS", sans-serif;
 	color: var(--xp-text);
+	background: radial-gradient(circle at 22% 14%, #eef1fb 0%, #dde2f0 44%, #b9c1d7 100%);
 }

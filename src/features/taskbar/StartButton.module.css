@@ -5,20 +5,20 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: linear-gradient(180deg, #58c15a 0%, #2f9e2f 55%, #2d8e2c 100%);
-  color: #ffffff;
-  border: 1px solid #1d621e;
+  background: linear-gradient(180deg, #f5f7ff 0%, #d6dcef 54%, #bcc5df 100%);
+  color: #2f3654;
+  border: 1px solid #7882a4;
   border-radius: 8px 18px 18px 8px;
   box-shadow:
-    inset 0 1px 0 #91e086,
-    inset 0 -1px 0 #237624,
-    1px 1px 0 #1749ad,
-    2px 2px 0 #0f2f88;
+    inset 0 1px 0 #ffffff,
+    inset 0 -1px 0 #8f99bb,
+    1px 1px 0 #6d7697,
+    2px 2px 0 #535b79;
   font-family: Tahoma, "Trebuchet MS", sans-serif;
   font-size: 13px;
   font-weight: 700;
   line-height: 1;
-  text-shadow: 0 1px 0 #1a6317;
+  text-shadow: 0 1px 0 #ffffff;
   cursor: pointer;
 }
 
@@ -29,12 +29,12 @@
 .startButton:active {
   transform: translateY(1px);
   box-shadow:
-    inset 0 2px 4px #1a5f19,
-    1px 1px 0 #0f2f88;
+    inset 0 2px 4px #8d96b6,
+    1px 1px 0 #535b79;
 }
 
 .startButton:focus-visible {
-  outline: 2px solid #ffdf70;
+  outline: 2px solid #f6b2ff;
   outline-offset: 1px;
 }
 
@@ -46,5 +46,5 @@
 .label {
   font-size: 17px;
   font-style: italic;
-  letter-spacing: -0.1px;
+  letter-spacing: 0;
 }

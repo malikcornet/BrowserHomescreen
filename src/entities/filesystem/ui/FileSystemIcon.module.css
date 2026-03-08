@@ -22,18 +22,18 @@
   margin: 0;
   max-width: 100%;
   padding: 1px 5px 2px;
-  color: #ffffff;
+  color: #f9fbff;
   font-family: Tahoma, "Trebuchet MS", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   text-align: center;
-  text-shadow: 0 1px 1px rgb(0 0 0 / 60%);
+  text-shadow: 0 1px 1px rgb(26 30 48 / 62%);
   word-break: break-word;
   border-radius: 2px;
 }
 
 .icon:hover .iconLabel {
-  background: linear-gradient(180deg, rgb(55 136 245 / 95%) 0%, rgb(18 92 211 / 95%) 100%);
-  outline: 1px solid rgb(255 255 255 / 70%);
+  background: linear-gradient(180deg, rgb(173 182 216 / 95%) 0%, rgb(118 129 168 / 95%) 100%);
+  outline: 1px solid rgb(245 248 255 / 75%);
   outline-offset: -1px;
 }

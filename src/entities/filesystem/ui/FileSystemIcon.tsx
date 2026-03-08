@@ -1,4 +1,10 @@
 import type { FileSystemItemBase } from "../model/filesystem-item";
+import {
+  CONTEXT_MENU_TARGET_ATTR,
+  CONTEXT_MENU_TARGETS,
+  FILESYSTEM_ITEM_KIND_ATTR,
+  FILESYSTEM_ITEM_NAME_ATTR,
+} from "@features/programs";
 import styles from "./FileSystemIcon.module.css";
 
 type FileSystemIconProps = {
@@ -23,6 +29,11 @@ function FileSystemIcon({
   return (
     <div
       className={styles.icon}
+      {...{
+        [CONTEXT_MENU_TARGET_ATTR]: CONTEXT_MENU_TARGETS.filesystemIcon,
+        [FILESYSTEM_ITEM_KIND_ATTR]: fileSystemItem.kind,
+        [FILESYSTEM_ITEM_NAME_ATTR]: fileSystemItem.name,
+      }}
       onDoubleClick={onDoubleClick}
       onMouseDown={handleMouseDown}
     >

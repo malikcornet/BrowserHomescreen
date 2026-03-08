@@ -1,0 +1,63 @@
+.contextMenu {
+  position: fixed;
+  min-width: 190px;
+  max-width: 290px;
+  background: #f2f3f8;
+  border: 1px solid #7f86a3;
+  box-shadow:
+    inset 1px 1px 0 #ffffff,
+    inset -1px -1px 0 #b9bfd1,
+    2px 3px 0 rgb(45 49 72 / 26%);
+  padding: 3px;
+  z-index: 2000;
+  font-family: Tahoma, "MS Sans Serif", sans-serif;
+}
+
+.contextMenu::before {
+  content: "";
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  bottom: 3px;
+  width: 24px;
+  background: linear-gradient(180deg, #edf1fb 0%, #d8deef 100%);
+  border-right: 1px solid #bcc6df;
+  pointer-events: none;
+}
+
+.menuItem {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: #000000;
+  text-align: left;
+  padding: 3px 10px 3px 31px;
+  font-family: Tahoma, "MS Sans Serif", sans-serif;
+  font-size: 11px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+
+.menuItem:hover:not(:disabled) {
+  background: linear-gradient(180deg, #9aa7ce 0%, #707ba7 100%);
+  color: #ffffff;
+}
+
+.menuItem:disabled {
+  color: #8d8d8d;
+  cursor: default;
+}
+
+.separator {
+  height: 1px;
+  margin: 3px 3px 3px 31px;
+  background: #c6cbda;
+}
+
+.menuItemDanger {
+  color: #9b2020;
+}
+
+.menuItemDanger:hover:not(:disabled) {
+  background: linear-gradient(180deg, #e08f9d 0%, #bf5f72 100%);
+}

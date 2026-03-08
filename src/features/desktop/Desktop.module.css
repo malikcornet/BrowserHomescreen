@@ -3,8 +3,16 @@
   flex: 1;
   width: 100%;
   min-height: 0;
-  background: #2f6ea7;
+  background:
+    radial-gradient(circle at 18% 14%, rgb(242 245 255 / 48%) 0%, rgb(242 245 255 / 0%) 40%),
+    radial-gradient(circle at 82% 24%, rgb(192 220 242 / 42%) 0%, rgb(192 220 242 / 0%) 46%),
+    radial-gradient(circle at 50% 76%, rgb(220 189 230 / 30%) 0%, rgb(220 189 230 / 0%) 54%),
+    linear-gradient(155deg, #c2c9dc 0%, #aeb6cc 40%, #959fba 100%);
   overflow: hidden;
+}
+
+.programSurface {
+  height: 100%;
 }
 
 .iconRegion {
@@ -17,4 +25,5 @@
   grid-template-rows: repeat(auto-fill, 96px);
   align-content: start;
   justify-content: start;
+  padding-top: 4px;
 }

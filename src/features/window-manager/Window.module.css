@@ -5,13 +5,13 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	border: 1px solid #003c9b;
+	border: 1px solid #6f789b;
 	border-radius: 8px 8px 0 0;
-	background: linear-gradient(180deg, #d9e9ff 0%, #c6dcff 100%);
+	background: linear-gradient(180deg, #eef2ff 0%, #dce2f2 100%);
 	box-shadow:
-		inset 0 0 0 1px #7db2ff,
-		0 0 0 1px #9dc4ff,
-		0 10px 22px rgb(7 34 92 / 38%);
+		inset 0 0 0 1px #f7f9ff,
+		0 0 0 1px #9ca6c4,
+		0 10px 22px rgb(38 47 79 / 34%);
 }
 
 .titleBar {
@@ -21,12 +21,12 @@
 	gap: 8px;
 	height: 30px;
 	padding: 0 6px 0 10px;
-	background: linear-gradient(180deg, #2b79eb 0%, #1655ca 58%, #0f43ab 100%);
+	background: linear-gradient(180deg, #adb6d8 0%, #8f99c0 56%, #7681a8 100%);
 	color: #ffffff;
 	cursor: grab;
 	user-select: none;
 	position: relative;
-	border-bottom: 1px solid #06307f;
+	border-bottom: 1px solid #636d8f;
 }
 
 .titleBar::before {
@@ -48,7 +48,7 @@
 	font-family: Tahoma, "Trebuchet MS", sans-serif;
 	font-size: 13px;
 	font-weight: 700;
-	text-shadow: 0 1px 1px rgb(0 0 0 / 40%);
+	text-shadow: 0 1px 1px rgb(31 37 59 / 55%);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -63,10 +63,10 @@
 .controlButton {
 	width: 21px;
 	height: 19px;
-	border: 1px solid #00348d;
+	border: 1px solid #69739a;
 	border-radius: 4px;
-	background: linear-gradient(180deg, #f8fbff 0%, #c5dcfd 58%, #9bbef6 100%);
-	color: #0d2f77;
+	background: linear-gradient(180deg, #ffffff 0%, #dfe4f5 58%, #bcc5e0 100%);
+	color: #364062;
 	font-family: Tahoma, sans-serif;
 	font-size: 10px;
 	font-weight: 700;
@@ -79,21 +79,21 @@
 }
 
 .controlButton:active {
-	background: linear-gradient(180deg, #9cbef2 0%, #c5dcfd 100%);
-	box-shadow: inset 0 1px 2px rgb(0 39 117 / 40%);
+	background: linear-gradient(180deg, #bcc5e0 0%, #dfe4f5 100%);
+	box-shadow: inset 0 1px 2px rgb(57 66 95 / 36%);
 }
 
 .windowControls .controlButton:last-child {
-	background: linear-gradient(180deg, #ff8484 0%, #e24f4f 58%, #cb2e2e 100%);
-	border-color: #862020;
+	background: linear-gradient(180deg, #ffb7be 0%, #ea7e8a 58%, #cc5765 100%);
+	border-color: #91505a;
 	color: #ffffff;
 	text-shadow: 0 1px 0 rgb(84 15 15 / 70%);
 }
 
 .content {
 	flex: 1;
-	border: 1px solid #6ea2f4;
-	background: #ffffff;
+	border: 1px solid #9ba5c3;
+	background: linear-gradient(180deg, #ffffff 0%, #f1f4ff 100%);
 	color: #000000;
 	font-family: Tahoma, "Trebuchet MS", sans-serif;
 	font-size: 13px;
