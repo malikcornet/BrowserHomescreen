@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useRef, type MouseEvent, type RefObject } from "react";
 import type { ResizeDirection, WindowRect } from "../Window";
 import type { FileExplorerWindow } from "./types";
-
-const MIN_WINDOW_WIDTH = 280;
-const MIN_WINDOW_HEIGHT = 180;
+import { MIN_WINDOW_HEIGHT, MIN_WINDOW_WIDTH } from "./constants";
 
 type ResizeState = {
   windowId: number;

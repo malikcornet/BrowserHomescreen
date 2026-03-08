@@ -1,4 +1,123 @@
+.explorerRoot {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	min-height: 0;
+	height: 100%;
+	padding: 8px;
+	box-sizing: border-box;
+	gap: 6px;
+}
+
+.toolbar {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px;
+	border: 1px solid #9ea8c5;
+	background: linear-gradient(180deg, #f7f9ff 0%, #e6ebfb 100%);
+	box-shadow: inset 0 0 0 1px #ffffff;
+}
+
+.toolbarButton {
+	width: 26px;
+	height: 24px;
+	border: 1px solid #7f8db2;
+	background: linear-gradient(180deg, #ffffff 0%, #dbe4fa 100%);
+	color: #334064;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	padding: 0;
+	line-height: 1;
+	box-shadow: inset 0 1px 0 #ffffff;
+}
+
+.toolbarButton:active:not(:disabled) {
+	background: linear-gradient(180deg, #dbe4fa 0%, #ffffff 100%);
+}
+
+.toolbarButton:disabled {
+	opacity: 0.45;
+}
+
+.pathBar {
+	flex: 1;
+	min-width: 0;
+	padding: 4px 8px;
+	border: 1px solid #9ea8c5;
+	background: #ffffff;
+	color: #243355;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 12px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.mainArea {
+	flex: 1;
+	min-height: 0;
+	display: flex;
+	gap: 6px;
+}
+
+.sidebar {
+	width: 180px;
+	flex-shrink: 0;
+	padding: 10px;
+	box-sizing: border-box;
+	border: 1px solid #9ca5c3;
+	background: linear-gradient(180deg, #f7f8ff 0%, #ecf1fe 100%);
+	box-shadow: inset 0 0 0 1px #ffffff;
+	overflow: auto;
+}
+
+.sidebarSectionTitle {
+	margin: 0 0 6px;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	color: #2f3d63;
+}
+
+.sidebarLink {
+	display: block;
+	width: 100%;
+	text-align: left;
+	padding: 4px 6px;
+	border: 1px solid transparent;
+	background: transparent;
+	color: #203054;
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 12px;
+	line-height: 1.25;
+	margin-bottom: 4px;
+}
+
+.sidebarLink:hover:not(:disabled) {
+	border-color: #9db0dc;
+	background: #dfe8fb;
+}
+
+.sidebarLink:disabled {
+	opacity: 0.5;
+}
+
+.sidebarLinksList {
+	margin-bottom: 4px;
+}
+
+.sidebarEmptyText {
+	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-size: 12px;
+	color: #4a5b87;
+	margin-bottom: 10px;
+}
+
 .childrenGrid {
+	flex: 1;
+	min-width: 0;
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(86px, 86px));
 	grid-auto-rows: 96px;
@@ -7,7 +126,6 @@
 	justify-content: start;
 	padding: 10px;
 	box-sizing: border-box;
-	height: 100%;
 	overflow: auto;
 	border: 1px solid #9ca5c3;
 	box-shadow:

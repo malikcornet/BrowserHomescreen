@@ -31,6 +31,13 @@ This project follows a feature-oriented React structure with clear ownership bou
 - Keep local relative imports for same-folder files (`./Window`, `./Window.module.css`).
 - Export only stable public modules from barrels; keep internal helpers un-exported.
 
+## Naming Conventions
+
+- Use `handle...` for user/event actions and state mutations (for example `handleEditingSubmit`).
+- Use `build...` for pure builder functions that create derived data (for example context menu items).
+- Use `use...Controller` for feature orchestration hooks that hide complex behavior from UI components.
+- Keep UI components declarative: read state from a controller hook and pass handlers/builders to child components.
+
 ## Current Example
 
 - `features/window-manager` owns window behavior and hooks.

@@ -1,129 +1,236 @@
-import { useState } from "react";
-import {
-  createDirectoryIn,
-  DirectoryItem,
-  FileSystemItemBase,
-  findItemInDirectory,
-  renameItem,
-} from "@entities/filesystem/model";
+import { useEffect, useMemo, useState } from "react";
+import { isDirectoryItem, type DirectoryItem } from "@entities/filesystem/model";
 import { FileSystemItemGrid } from "@features/desktop";
-import ProgramSurface, { type ProgramContextMenuRequest } from "../ProgramSurface";
-import { CONTEXT_MENU_LABEL } from "../context-menu.constants";
-import { getFilesystemIconContext } from "../context-menu-targets";
-import type { ContextMenuItem } from "@shared/ui";
+import ProgramSurface from "../ProgramSurface";
 import programStyles from "../Program.module.css";
 import styles from "./FileExplorer.module.css";
+import { useFileExplorerController } from "./hooks/useFileExplorerController";
 
 type FileExplorerProps = {
   directoryItem: DirectoryItem;
+  rootDirectory?: DirectoryItem;
   onDirectoryChange?: (directory: DirectoryItem) => void;
   onFilesystemChange?: () => void;
 };
 
-const FILE_EXPLORER_MENU_ID = {
-  refresh: "explorer-refresh",
-  separatorPrimary: "explorer-separator-1",
-  renameItem: "explorer-rename-item",
-  deleteItem: "explorer-delete-item",
-  newFolder: "explorer-new-folder",
-  separatorSecondary: "explorer-separator-2",
-  properties: "explorer-properties",
-} as const;
+const DEFAULT_ROOT_LABEL = "Desktop";
 
-function FileExplorer({ directoryItem, onDirectoryChange, onFilesystemChange }: FileExplorerProps) {
-  const [editingItem, setEditingItem] = useState<FileSystemItemBase | null>(null);
-  const [, bumpExplorerVersion] = useState(0);
+const findDirectoryPath = (
+  rootDirectory: DirectoryItem,
+  targetDirectory: DirectoryItem,
+): DirectoryItem[] | null => {
+  if (rootDirectory === targetDirectory) {
+    return [rootDirectory];
+  }
 
-  const handleEditingSubmit = (requestedName: string, item: FileSystemItemBase) => {
-    const renamedItem = renameItem(directoryItem, item, requestedName);
-
-    setEditingItem(null);
-
-    if (renamedItem) {
-      bumpExplorerVersion((currentVersion) => currentVersion + 1);
-      onFilesystemChange?.();
+  for (const child of rootDirectory.children) {
+    if (!isDirectoryItem(child)) {
+      continue;
     }
+
+    const childPath = findDirectoryPath(child, targetDirectory);
+
+    if (childPath) {
+      return [rootDirectory, ...childPath];
+    }
+  }
+
+  return null;
+};
+
+function FileExplorer({
+  directoryItem,
+  rootDirectory,
+  onDirectoryChange,
+  onFilesystemChange,
+}: FileExplorerProps) {
+  const {
+    editingItem,
+    buildFileExplorerMenuItems,
+    handleEditingSubmit,
+    handleEditingCancel,
+  } = useFileExplorerController({
+    directoryItem,
+    onFilesystemChange,
+  });
+
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
+  const [navigationHistory, setNavigationHistory] = useState<DirectoryItem[]>([directoryItem]);
+  const [navigationIndex, setNavigationIndex] = useState(0);
+
+  useEffect(() => {
+    const current = navigationHistory[navigationIndex];
+
+    if (current === directoryItem) {
+      return;
+    }
+
+    const existingIndex = navigationHistory.findIndex((directory) => directory === directoryItem);
+
+    if (existingIndex >= 0) {
+      setNavigationIndex(existingIndex);
+      return;
+    }
+
+    setNavigationHistory([directoryItem]);
+    setNavigationIndex(0);
+  }, [directoryItem, navigationHistory, navigationIndex]);
+
+  const currentDirectoryPath = useMemo(() => {
+    if (!rootDirectory) {
+      return [directoryItem];
+    }
+
+    return findDirectoryPath(rootDirectory, directoryItem) ?? [directoryItem];
+  }, [directoryItem, rootDirectory]);
+
+  const windowsPath = useMemo(() => {
+    const names = currentDirectoryPath
+      .map((directory) => directory.name)
+      .filter((name) => name !== "/");
+    const rootLabel = rootDirectory?.name === "/" || !rootDirectory?.name
+      ? DEFAULT_ROOT_LABEL
+      : rootDirectory.name;
+
+    return names.length > 0
+      ? `${rootLabel}\\${names.join("\\")}`
+      : rootLabel;
+  }, [currentDirectoryPath, rootDirectory]);
+
+  const childDirectories = useMemo(() => {
+    return directoryItem.children.filter(isDirectoryItem);
+  }, [directoryItem]);
+  const canGoBack = navigationIndex > 0;
+  const canGoForward = navigationIndex < navigationHistory.length - 1;
+
+  const navigateToDirectory = (nextDirectory: DirectoryItem, pushToHistory: boolean) => {
+    if (nextDirectory === directoryItem) {
+      return;
+    }
+
+    if (pushToHistory) {
+      setNavigationHistory((previousHistory) => {
+        const nextHistory = previousHistory.slice(0, navigationIndex + 1);
+        nextHistory.push(nextDirectory);
+        return nextHistory;
+      });
+      setNavigationIndex((previousIndex) => previousIndex + 1);
+    }
+
+    onDirectoryChange?.(nextDirectory);
   };
 
-  const handleEditingCancel = () => {
-    setEditingItem(null);
+  const handleBack = () => {
+    if (!canGoBack) {
+      return;
+    }
+
+    const previousIndex = navigationIndex - 1;
+    const previousDirectory = navigationHistory[previousIndex];
+
+    if (!previousDirectory) {
+      return;
+    }
+
+    setNavigationIndex(previousIndex);
+    onDirectoryChange?.(previousDirectory);
   };
 
-  const getFileExplorerMenuItems = (context: ProgramContextMenuRequest): ContextMenuItem[] => {
-    const { isIcon, itemName, itemKind } = getFilesystemIconContext(context.targetElement);
+  const handleForward = () => {
+    if (!canGoForward) {
+      return;
+    }
 
-    return [
-      {
-        id: FILE_EXPLORER_MENU_ID.refresh,
-        label: CONTEXT_MENU_LABEL.refresh,
-        onSelect: () => {
-          // Placeholder action; data is static for now.
-        },
-      },
-      { id: FILE_EXPLORER_MENU_ID.separatorPrimary, type: "separator" },
-      ...(isIcon
-        ? [
-            {
-              id: FILE_EXPLORER_MENU_ID.renameItem,
-              label: `${CONTEXT_MENU_LABEL.rename}${itemName ? ` ${itemName}` : ""}`,
-              onSelect: () => {
-                if (!itemName || !itemKind) {
-                  return;
-                }
+    const nextIndex = navigationIndex + 1;
+    const nextDirectory = navigationHistory[nextIndex];
 
-                const targetItem = findItemInDirectory(directoryItem, itemName, itemKind);
+    if (!nextDirectory) {
+      return;
+    }
 
-                if (!targetItem) {
-                  return;
-                }
-
-                setEditingItem(targetItem);
-              },
-            },
-            {
-              id: FILE_EXPLORER_MENU_ID.deleteItem,
-              label: `${CONTEXT_MENU_LABEL.delete}${itemName ? ` ${itemName}` : ""}`,
-              onSelect: () => {
-                // Future action once filesystem mutability is implemented.
-              },
-              danger: true,
-              disabled: true,
-            },
-          ]
-        : [
-            {
-              id: FILE_EXPLORER_MENU_ID.newFolder,
-              label: CONTEXT_MENU_LABEL.newFolder,
-              onSelect: () => {
-                const createdDirectory = createDirectoryIn(directoryItem);
-                setEditingItem(createdDirectory);
-                bumpExplorerVersion((currentVersion) => currentVersion + 1);
-                onFilesystemChange?.();
-              },
-            },
-          ]),
-      { id: FILE_EXPLORER_MENU_ID.separatorSecondary, type: "separator" },
-      {
-        id: FILE_EXPLORER_MENU_ID.properties,
-        label: `${CONTEXT_MENU_LABEL.properties} (${directoryItem.name})`,
-        onSelect: () => {
-          // Future action once explorer metadata view exists.
-        },
-        disabled: true,
-      },
-    ];
+    setNavigationIndex(nextIndex);
+    onDirectoryChange?.(nextDirectory);
   };
 
   return (
-    <ProgramSurface className={programStyles.programParent} getContextMenuItems={getFileExplorerMenuItems}>
-      <div className={styles.childrenGrid}>
-        <FileSystemItemGrid
-          items={directoryItem.children}
-          onDirectoryOpen={onDirectoryChange}
-          editingItem={editingItem}
-          onEditingSubmit={handleEditingSubmit}
-          onEditingCancel={handleEditingCancel}
-        />
+    <ProgramSurface className={programStyles.programParent} getContextMenuItems={buildFileExplorerMenuItems}>
+      <div className={styles.explorerRoot}>
+        <div className={styles.toolbar}>
+          <button
+            type="button"
+            className={styles.toolbarButton}
+            onClick={() => setIsSidebarCollapsed((current) => !current)}
+            aria-label={isSidebarCollapsed ? "Expand navigation pane" : "Collapse navigation pane"}
+          >
+            {isSidebarCollapsed ? ">>" : "<<"}
+          </button>
+          <button
+            type="button"
+            className={styles.toolbarButton}
+            onClick={handleBack}
+            disabled={!canGoBack}
+            aria-label="Back"
+          >
+            &lt;
+          </button>
+          <button
+            type="button"
+            className={styles.toolbarButton}
+            onClick={handleForward}
+            disabled={!canGoForward}
+            aria-label="Forward"
+          >
+            &gt;
+          </button>
+          
+          <div className={styles.pathBar} title={windowsPath}>
+            {windowsPath}
+          </div>
+        </div>
+
+        <div className={styles.mainArea}>
+          {!isSidebarCollapsed ? (
+            <aside className={styles.sidebar}>
+              <h3 className={styles.sidebarSectionTitle}>Tasks</h3>
+              <button
+                type="button"
+                className={styles.sidebarLink}
+                onClick={() => rootDirectory && navigateToDirectory(rootDirectory, true)}
+                disabled={!rootDirectory || rootDirectory === directoryItem}
+              >
+                Desktop
+              </button>
+
+              <h3 className={styles.sidebarSectionTitle}>Folders</h3>
+              {childDirectories.length === 0 ? (
+                <div className={styles.sidebarEmptyText}>No subfolders in this directory.</div>
+              ) : (
+                <div className={styles.sidebarLinksList}>
+                  {childDirectories.map((childDirectory, index) => (
+                    <button
+                      key={`${childDirectory.name}-${index}`}
+                      type="button"
+                      className={styles.sidebarLink}
+                      onClick={() => navigateToDirectory(childDirectory, true)}
+                    >
+                      {childDirectory.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </aside>
+          ) : null}
+
+          <div className={styles.childrenGrid}>
+            <FileSystemItemGrid
+              items={directoryItem.children}
+              onDirectoryOpen={(nextDirectory) => navigateToDirectory(nextDirectory, true)}
+              editingItem={editingItem}
+              onEditingSubmit={handleEditingSubmit}
+              onEditingCancel={handleEditingCancel}
+            />
+          </div>
+        </div>
       </div>
     </ProgramSurface>
   );

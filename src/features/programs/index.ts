@@ -1,7 +1,9 @@
 export * from "./file-explorer";
+export * from "./filesystem";
 export * from "./terminal";
+export * from "./hooks";
 export { default as ProgramSurface } from "./ProgramSurface";
-export type { ProgramContextMenuRequest } from "./ProgramSurface";
+export type { ProgramContextMenuRequest, ProgramSurfaceProps } from "./ProgramSurface.types";
 export {
 	CONTEXT_MENU_TARGET_ATTR,
 	CONTEXT_MENU_TARGETS,

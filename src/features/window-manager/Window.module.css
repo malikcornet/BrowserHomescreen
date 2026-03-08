@@ -92,6 +92,8 @@
 
 .content {
 	flex: 1;
+	min-height: 0;
+	display: flex;
 	border: 1px solid #9ba5c3;
 	background: linear-gradient(180deg, #ffffff 0%, #f1f4ff 100%);
 	color: #000000;

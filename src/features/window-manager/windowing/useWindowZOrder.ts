@@ -1,15 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { DirectoryItem } from "@entities/filesystem/model";
 import type { WindowRect } from "../Window";
+import { DEFAULT_WINDOW_RECT, WINDOW_CASCADE_OFFSET } from "./constants";
 import type { FileExplorerWindow } from "./types";
-
-const WINDOW_CASCADE_OFFSET = 24;
-const DEFAULT_WINDOW_RECT: WindowRect = {
-  x: 24,
-  y: 24,
-  width: 420,
-  height: 320,
-};
 
 const bringWindowToFront = (windows: FileExplorerWindow[], id: number): FileExplorerWindow[] => {
   const focusedWindow = windows.find((windowItem) => windowItem.id === id);
@@ -38,17 +31,34 @@ const updateWindowById = (
 type UseWindowZOrderArgs = {
   rootDirectory: DirectoryItem;
   clampRectToRegion: (rect: WindowRect) => WindowRect;
+  initialWindows?: FileExplorerWindow[];
 };
 
-export function useWindowZOrder({ rootDirectory, clampRectToRegion }: UseWindowZOrderArgs) {
-  const nextWindowIdRef = useRef(2);
-  const [openWindows, setOpenWindows] = useState<FileExplorerWindow[]>([
-    {
-      id: 1,
-      directory: rootDirectory,
-      rect: DEFAULT_WINDOW_RECT,
-    },
-  ]);
+const buildDefaultWindow = (rootDirectory: DirectoryItem): FileExplorerWindow => {
+  return {
+    id: 1,
+    directory: rootDirectory,
+    rect: DEFAULT_WINDOW_RECT,
+  };
+};
+
+const getNextWindowId = (windows: FileExplorerWindow[] | undefined): number => {
+  if (!windows || windows.length === 0) {
+    return 2;
+  }
+
+  return Math.max(...windows.map((windowItem) => windowItem.id)) + 1;
+};
+
+export function useWindowZOrder({ rootDirectory, clampRectToRegion, initialWindows }: UseWindowZOrderArgs) {
+  const nextWindowIdRef = useRef(getNextWindowId(initialWindows));
+  const [openWindows, setOpenWindows] = useState<FileExplorerWindow[]>(() => {
+    if (typeof initialWindows === "undefined") {
+      return [buildDefaultWindow(rootDirectory)];
+    }
+
+    return initialWindows;
+  });
   const openWindowsRef = useRef(openWindows);
 
   useEffect(() => {
