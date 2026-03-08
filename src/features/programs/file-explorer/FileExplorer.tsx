@@ -1,4 +1,11 @@
-import { DirectoryItem } from "@entities/filesystem/model";
+import { useState } from "react";
+import {
+  createDirectoryIn,
+  DirectoryItem,
+  FileSystemItemBase,
+  findItemInDirectory,
+  renameItem,
+} from "@entities/filesystem/model";
 import { FileSystemItemGrid } from "@features/desktop";
 import ProgramSurface, { type ProgramContextMenuRequest } from "../ProgramSurface";
 import { CONTEXT_MENU_LABEL } from "../context-menu.constants";
@@ -10,20 +17,40 @@ import styles from "./FileExplorer.module.css";
 type FileExplorerProps = {
   directoryItem: DirectoryItem;
   onDirectoryChange?: (directory: DirectoryItem) => void;
+  onFilesystemChange?: () => void;
 };
 
 const FILE_EXPLORER_MENU_ID = {
   refresh: "explorer-refresh",
   separatorPrimary: "explorer-separator-1",
+  renameItem: "explorer-rename-item",
   deleteItem: "explorer-delete-item",
   newFolder: "explorer-new-folder",
   separatorSecondary: "explorer-separator-2",
   properties: "explorer-properties",
 } as const;
 
-function FileExplorer({ directoryItem, onDirectoryChange }: FileExplorerProps) {
+function FileExplorer({ directoryItem, onDirectoryChange, onFilesystemChange }: FileExplorerProps) {
+  const [editingItem, setEditingItem] = useState<FileSystemItemBase | null>(null);
+  const [, bumpExplorerVersion] = useState(0);
+
+  const handleEditingSubmit = (requestedName: string, item: FileSystemItemBase) => {
+    const renamedItem = renameItem(directoryItem, item, requestedName);
+
+    setEditingItem(null);
+
+    if (renamedItem) {
+      bumpExplorerVersion((currentVersion) => currentVersion + 1);
+      onFilesystemChange?.();
+    }
+  };
+
+  const handleEditingCancel = () => {
+    setEditingItem(null);
+  };
+
   const getFileExplorerMenuItems = (context: ProgramContextMenuRequest): ContextMenuItem[] => {
-    const { isIcon, itemName } = getFilesystemIconContext(context.targetElement);
+    const { isIcon, itemName, itemKind } = getFilesystemIconContext(context.targetElement);
 
     return [
       {
@@ -36,6 +63,23 @@ function FileExplorer({ directoryItem, onDirectoryChange }: FileExplorerProps) {
       { id: FILE_EXPLORER_MENU_ID.separatorPrimary, type: "separator" },
       ...(isIcon
         ? [
+            {
+              id: FILE_EXPLORER_MENU_ID.renameItem,
+              label: `${CONTEXT_MENU_LABEL.rename}${itemName ? ` ${itemName}` : ""}`,
+              onSelect: () => {
+                if (!itemName || !itemKind) {
+                  return;
+                }
+
+                const targetItem = findItemInDirectory(directoryItem, itemName, itemKind);
+
+                if (!targetItem) {
+                  return;
+                }
+
+                setEditingItem(targetItem);
+              },
+            },
             {
               id: FILE_EXPLORER_MENU_ID.deleteItem,
               label: `${CONTEXT_MENU_LABEL.delete}${itemName ? ` ${itemName}` : ""}`,
@@ -51,9 +95,11 @@ function FileExplorer({ directoryItem, onDirectoryChange }: FileExplorerProps) {
               id: FILE_EXPLORER_MENU_ID.newFolder,
               label: CONTEXT_MENU_LABEL.newFolder,
               onSelect: () => {
-                // Future action once filesystem mutability is implemented.
+                const createdDirectory = createDirectoryIn(directoryItem);
+                setEditingItem(createdDirectory);
+                bumpExplorerVersion((currentVersion) => currentVersion + 1);
+                onFilesystemChange?.();
               },
-              disabled: true,
             },
           ]),
       { id: FILE_EXPLORER_MENU_ID.separatorSecondary, type: "separator" },
@@ -71,7 +117,13 @@ function FileExplorer({ directoryItem, onDirectoryChange }: FileExplorerProps) {
   return (
     <ProgramSurface className={programStyles.programParent} getContextMenuItems={getFileExplorerMenuItems}>
       <div className={styles.childrenGrid}>
-        <FileSystemItemGrid items={directoryItem.children} onDirectoryOpen={onDirectoryChange} />
+        <FileSystemItemGrid
+          items={directoryItem.children}
+          onDirectoryOpen={onDirectoryChange}
+          editingItem={editingItem}
+          onEditingSubmit={handleEditingSubmit}
+          onEditingCancel={handleEditingCancel}
+        />
       </div>
     </ProgramSurface>
   );

@@ -1,3 +1,5 @@
+import type { FileSystemItemKind } from "@entities/filesystem";
+
 export const CONTEXT_MENU_TARGET_ATTR = "data-context-menu-target";
 export const FILESYSTEM_ITEM_KIND_ATTR = "data-filesystem-item-kind";
 export const FILESYSTEM_ITEM_NAME_ATTR = "data-filesystem-item-name";
@@ -12,7 +14,15 @@ type FilesystemIconContext = {
   element: HTMLElement | null;
   isIcon: boolean;
   itemName: string | null;
-  itemKind: string | null;
+  itemKind: FileSystemItemKind | null;
+};
+
+const parseFilesystemItemKind = (rawKind: string | null): FileSystemItemKind | null => {
+  if (rawKind === "directory" || rawKind === "file") {
+    return rawKind;
+  }
+
+  return null;
 };
 
 export const getFilesystemIconContext = (targetElement: HTMLElement | null): FilesystemIconContext => {
@@ -22,6 +32,6 @@ export const getFilesystemIconContext = (targetElement: HTMLElement | null): Fil
     element,
     isIcon: Boolean(element),
     itemName: element?.getAttribute(FILESYSTEM_ITEM_NAME_ATTR) ?? null,
-    itemKind: element?.getAttribute(FILESYSTEM_ITEM_KIND_ATTR) ?? null,
+    itemKind: parseFilesystemItemKind(element?.getAttribute(FILESYSTEM_ITEM_KIND_ATTR) ?? null),
   };
 };

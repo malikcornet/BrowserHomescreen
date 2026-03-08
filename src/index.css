@@ -30,5 +30,5 @@ body,
 body {
 	font-family: Tahoma, "Segoe UI", "Trebuchet MS", sans-serif;
 	color: var(--xp-text);
-	background: radial-gradient(circle at 22% 14%, #eef1fb 0%, #dde2f0 44%, #b9c1d7 100%);
+	background: #2f6ea7;
 }

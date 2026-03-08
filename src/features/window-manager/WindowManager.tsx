@@ -13,6 +13,7 @@ import { useWindowDrag, useWindowResize, useWindowZOrder } from "./windowing";
 
 type WindowManagerProps = {
   rootDirectory: DirectoryItem;
+  onFilesystemChange?: () => void;
 };
 
 export type WindowManagerHandle = {
@@ -27,7 +28,7 @@ const getExplorerTitle = (directory: DirectoryItem) => {
 };
 
 const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(function WindowManager(
-  { rootDirectory },
+  { rootDirectory, onFilesystemChange },
   ref,
 ) {
   const windowRegionRef = useRef<HTMLDivElement | null>(null);
@@ -133,6 +134,7 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
           <FileExplorer
             directoryItem={windowItem.directory}
             onDirectoryChange={(nextDirectory) => updateFileExplorerDirectory(windowItem.id, nextDirectory)}
+            onFilesystemChange={onFilesystemChange}
           />
         </Window>
       ))}

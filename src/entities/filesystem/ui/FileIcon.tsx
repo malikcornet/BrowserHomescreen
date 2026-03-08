@@ -1,12 +1,16 @@
+import type { FileSystemItemBase } from "../model/filesystem-item";
 import type { FileItem } from "../model/file-item";
 import { resolveFileUrl } from "../model/filesystem-utils";
 import FileSystemIcon from "./FileSystemIcon";
 
 type FileIconProps = {
   fileItem: FileItem;
+  isEditing?: boolean;
+  onEditingSubmit?: (nextName: string, item: FileSystemItemBase) => void;
+  onEditingCancel?: (item: FileSystemItemBase) => void;
 };
 
-function FileIcon({ fileItem }: FileIconProps) {
+function FileIcon({ fileItem, isEditing, onEditingSubmit, onEditingCancel }: FileIconProps) {
   const handleDoubleClick = () => {
     window.location.href = resolveFileUrl(fileItem.url);
   };
@@ -20,6 +24,9 @@ function FileIcon({ fileItem }: FileIconProps) {
       fileSystemItem={fileItem}
       onDoubleClick={handleDoubleClick}
       onScrollWheelClick={handleScrollWheelClick}
+      isEditing={isEditing}
+      onEditingSubmit={onEditingSubmit}
+      onEditingCancel={onEditingCancel}
     />
   );
 }
