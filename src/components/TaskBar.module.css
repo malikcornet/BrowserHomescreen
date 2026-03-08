@@ -1,8 +1,12 @@
 .taskbar {
-  flex: 0 0 30px;
-  background-color: #c0c0c0;
+  flex: 0 0 40px;
+  background:
+    linear-gradient(180deg, #5cabff 0%, #3f88f5 48%, #2f69dc 49%, #1f55c7 100%);
+  border-top: 1px solid #76b7ff;
+  box-shadow: inset 0 1px 0 #9bd0ff;
   display: flex;
   align-items: center;
+  padding: 0 8px 0 4px;
 }
 
 .taskBand,
@@ -16,13 +20,18 @@
     display: flex;
     align-items: center;
     gap: 4px;
-    padding: 0 8px;
+  padding: 0 10px;
 }
 
 .systemTray {
-    flex: 0 0 100px;
+  flex: 0 0 120px;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 4px;
+  color: #eef6ff;
+  font-size: 11px;
+  border-left: 1px solid #2c66d5;
+  box-shadow: inset 1px 0 0 #6ca9f5;
+  padding-left: 10px;
 }

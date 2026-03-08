@@ -4,7 +4,24 @@ body,
 	height: 100%;
 }
 
-*{
+:root {
+	--xp-blue-1: #245edb;
+	--xp-blue-2: #1c4fb8;
+	--xp-blue-3: #0f2f8c;
+	--xp-taskbar-top: #3c89f7;
+	--xp-taskbar-bottom: #1d56ce;
+	--xp-window-border: #08318f;
+	--xp-window-frame: #5f9dff;
+	--xp-text: #0f1724;
+}
+
+* {
 	margin: 0;
 	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: Tahoma, "Segoe UI", "Trebuchet MS", sans-serif;
+	color: var(--xp-text);
 }

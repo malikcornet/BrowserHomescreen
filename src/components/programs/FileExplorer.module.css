@@ -5,8 +5,19 @@
 	gap: 0;
 	align-content: start;
 	justify-content: start;
-	padding: 8px;
+	padding: 10px;
 	box-sizing: border-box;
 	height: 100%;
 	overflow: auto;
+	border: 1px solid #7ca7f1;
+	box-shadow: inset 0 0 0 1px #ffffff;
+	background:
+		linear-gradient(180deg, #fefeff 0%, #f5f9ff 100%),
+		repeating-linear-gradient(
+			0deg,
+			rgb(227 237 251 / 45%) 0,
+			rgb(227 237 251 / 45%) 1px,
+			transparent 1px,
+			transparent 26px
+		);
 }

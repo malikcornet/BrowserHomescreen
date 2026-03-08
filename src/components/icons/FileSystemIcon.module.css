@@ -15,24 +15,25 @@
   width: var(--icon-size);
   height: var(--icon-size);
   object-fit: contain;
-  image-rendering: pixelated;
+  image-rendering: auto;
 }
 
 .iconLabel {
   margin: 0;
   max-width: 100%;
-  padding: 1px 4px;
+  padding: 1px 5px 2px;
   color: #ffffff;
-  font-family: "MS Sans Serif", Tahoma, sans-serif;
+  font-family: Tahoma, "Trebuchet MS", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   text-align: center;
-  text-shadow: 1px 1px 0 #000000;
+  text-shadow: 0 1px 1px rgb(0 0 0 / 60%);
   word-break: break-word;
+  border-radius: 2px;
 }
 
 .icon:hover .iconLabel {
-  background: #000080;
-  outline: 1px dotted #ffffff;
+  background: linear-gradient(180deg, rgb(55 136 245 / 95%) 0%, rgb(18 92 211 / 95%) 100%);
+  outline: 1px solid rgb(255 255 255 / 70%);
   outline-offset: -1px;
 }
