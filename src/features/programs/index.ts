@@ -9,6 +9,7 @@ export {
 	CONTEXT_MENU_TARGETS,
 	FILESYSTEM_ITEM_KIND_ATTR,
 	FILESYSTEM_ITEM_NAME_ATTR,
+	FILESYSTEM_ITEM_PATH_ATTR,
 	FILESYSTEM_ICON_SELECTOR,
 	getFilesystemIconContext,
 } from "./context-menu-targets";

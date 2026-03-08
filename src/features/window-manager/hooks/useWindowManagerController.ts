@@ -31,8 +31,65 @@ type UseWindowManagerControllerArgs = {
   onWindowsChange?: (windows: FileExplorerWindow[]) => void;
 };
 
+type RegionSize = {
+  width: number;
+  height: number;
+};
+
 const getExplorerTitle = (directory: DirectoryItem) => {
   return `File Explorer - ${directory.name}`;
+};
+
+const clampRectWithinRegion = (rect: WindowRect, regionSize: RegionSize): WindowRect => {
+  const minWidth = Math.min(MIN_WINDOW_WIDTH, regionSize.width);
+  const minHeight = Math.min(MIN_WINDOW_HEIGHT, regionSize.height);
+  const width = Math.min(Math.max(minWidth, rect.width), regionSize.width);
+  const height = Math.min(Math.max(minHeight, rect.height), regionSize.height);
+  const x = Math.min(Math.max(0, rect.x), Math.max(0, regionSize.width - width));
+  const y = Math.min(Math.max(0, rect.y), Math.max(0, regionSize.height - height));
+
+  return { x, y, width, height };
+};
+
+type BuildWindowViewModelArgs = {
+  windowItem: FileExplorerWindow;
+  zIndex: number;
+  draggingWindowId: number | null;
+  closeWindow: (id: number) => void;
+  focusWindow: (id: number) => void;
+  handleTitleBarMouseDown: (id: number, event: MouseEvent<HTMLElement>) => void;
+  handleResizeMouseDown: (id: number, direction: ResizeDirection, event: MouseEvent<HTMLButtonElement>) => void;
+  updateFileExplorerDirectory: (id: number, directory: DirectoryItem) => void;
+};
+
+const buildWindowViewModel = ({
+  windowItem,
+  zIndex,
+  draggingWindowId,
+  closeWindow,
+  focusWindow,
+  handleTitleBarMouseDown,
+  handleResizeMouseDown,
+  updateFileExplorerDirectory,
+}: BuildWindowViewModelArgs): WindowViewModel => {
+  return {
+    id: windowItem.id,
+    title: getExplorerTitle(windowItem.directory),
+    frame: {
+      zIndex,
+      position: { x: windowItem.rect.x, y: windowItem.rect.y },
+      size: { width: windowItem.rect.width, height: windowItem.rect.height },
+      isDragging: draggingWindowId === windowItem.id,
+    },
+    callbacks: {
+      onClose: () => closeWindow(windowItem.id),
+      onFocus: () => focusWindow(windowItem.id),
+      onTitleBarMouseDown: (event) => handleTitleBarMouseDown(windowItem.id, event),
+      onResizeMouseDown: (direction, event) => handleResizeMouseDown(windowItem.id, direction, event),
+    },
+    directory: windowItem.directory,
+    onDirectoryChange: (nextDirectory) => updateFileExplorerDirectory(windowItem.id, nextDirectory),
+  };
 };
 
 export function useWindowManagerController({
@@ -42,7 +99,7 @@ export function useWindowManagerController({
 }: UseWindowManagerControllerArgs) {
   const windowRegionRef = useRef<HTMLDivElement | null>(null);
 
-  const getRegionSize = useCallback(() => {
+  const getRegionSize = useCallback((): RegionSize | null => {
     const region = windowRegionRef.current;
 
     if (!region) {
@@ -62,14 +119,7 @@ export function useWindowManagerController({
       return rect;
     }
 
-    const minWidth = Math.min(MIN_WINDOW_WIDTH, regionSize.width);
-    const minHeight = Math.min(MIN_WINDOW_HEIGHT, regionSize.height);
-    const width = Math.min(Math.max(minWidth, rect.width), regionSize.width);
-    const height = Math.min(Math.max(minHeight, rect.height), regionSize.height);
-    const x = Math.min(Math.max(0, rect.x), Math.max(0, regionSize.width - width));
-    const y = Math.min(Math.max(0, rect.y), Math.max(0, regionSize.height - height));
-
-    return { x, y, width, height };
+    return clampRectWithinRegion(rect, regionSize);
   }, [getRegionSize]);
 
   const {
@@ -119,24 +169,18 @@ export function useWindowManagerController({
   }, [onWindowsChange, openWindows]);
 
   const windowViewModels = useMemo<WindowViewModel[]>(() => {
-    return openWindows.map((windowItem: FileExplorerWindow, index) => ({
-      id: windowItem.id,
-      title: getExplorerTitle(windowItem.directory),
-      frame: {
+    return openWindows.map((windowItem: FileExplorerWindow, index) =>
+      buildWindowViewModel({
+        windowItem,
         zIndex: index + 1,
-        position: { x: windowItem.rect.x, y: windowItem.rect.y },
-        size: { width: windowItem.rect.width, height: windowItem.rect.height },
-        isDragging: draggingWindowId === windowItem.id,
-      },
-      callbacks: {
-        onClose: () => closeWindow(windowItem.id),
-        onFocus: () => focusWindow(windowItem.id),
-        onTitleBarMouseDown: (event) => handleTitleBarMouseDown(windowItem.id, event),
-        onResizeMouseDown: (direction, event) => handleResizeMouseDown(windowItem.id, direction, event),
-      },
-      directory: windowItem.directory,
-      onDirectoryChange: (nextDirectory) => updateFileExplorerDirectory(windowItem.id, nextDirectory),
-    }));
+        draggingWindowId,
+        closeWindow,
+        focusWindow,
+        handleTitleBarMouseDown,
+        handleResizeMouseDown,
+        updateFileExplorerDirectory,
+      }),
+    );
   }, [
     closeWindow,
     draggingWindowId,

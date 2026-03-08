@@ -65,54 +65,12 @@
 .sidebar {
 	width: 180px;
 	flex-shrink: 0;
-	padding: 10px;
+	padding: 0;
 	box-sizing: border-box;
-	border: 1px solid #9ca5c3;
-	background: linear-gradient(180deg, #f7f8ff 0%, #ecf1fe 100%);
-	box-shadow: inset 0 0 0 1px #ffffff;
-	overflow: auto;
-}
-
-.sidebarSectionTitle {
-	margin: 0 0 6px;
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 12px;
-	font-weight: 700;
-	color: #2f3d63;
-}
-
-.sidebarLink {
-	display: block;
-	width: 100%;
-	text-align: left;
-	padding: 4px 6px;
-	border: 1px solid transparent;
+	border: 0;
 	background: transparent;
-	color: #203054;
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 12px;
-	line-height: 1.25;
-	margin-bottom: 4px;
-}
-
-.sidebarLink:hover:not(:disabled) {
-	border-color: #9db0dc;
-	background: #dfe8fb;
-}
-
-.sidebarLink:disabled {
-	opacity: 0.5;
-}
-
-.sidebarLinksList {
-	margin-bottom: 4px;
-}
-
-.sidebarEmptyText {
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 12px;
-	color: #4a5b87;
-	margin-bottom: 10px;
+	box-shadow: none;
+	overflow: auto;
 }
 
 .childrenGrid {

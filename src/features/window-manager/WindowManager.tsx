@@ -3,6 +3,7 @@ import {
   useImperativeHandle,
 } from "react";
 import type { DirectoryItem } from "@entities/filesystem/model";
+import type { PersistedProgramState } from "@features/persistence";
 import { FileExplorer } from "@features/programs/file-explorer";
 import styles from "./WindowManager.module.css";
 import Window from "./Window";
@@ -14,6 +15,8 @@ type WindowManagerProps = {
   initialWindows?: FileExplorerWindow[];
   onWindowsChange?: (windows: FileExplorerWindow[]) => void;
   onFilesystemChange?: () => void;
+  fileExplorerProgramState?: PersistedProgramState;
+  onFileExplorerProgramStateChange?: (nextState: PersistedProgramState) => void;
 };
 
 export type WindowManagerHandle = {
@@ -21,7 +24,14 @@ export type WindowManagerHandle = {
 };
 
 const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(function WindowManager(
-  { rootDirectory, initialWindows, onWindowsChange, onFilesystemChange },
+  {
+    rootDirectory,
+    initialWindows,
+    onWindowsChange,
+    onFilesystemChange,
+    fileExplorerProgramState,
+    onFileExplorerProgramStateChange,
+  },
   ref,
 ) {
   const { windowRegionRef, openFileExplorer, windowViewModels } = useWindowManagerController({
@@ -52,6 +62,8 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
             rootDirectory={rootDirectory}
             onDirectoryChange={windowItem.onDirectoryChange}
             onFilesystemChange={onFilesystemChange}
+            programState={fileExplorerProgramState}
+            onProgramStateChange={onFileExplorerProgramStateChange}
           />
         </Window>
       ))}

@@ -1,9 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { isDirectoryItem, type DirectoryItem } from "@entities/filesystem/model";
 import { FileSystemItemGrid } from "@features/desktop";
+import type { PersistedProgramState } from "@features/persistence";
 import ProgramSurface from "../ProgramSurface";
 import programStyles from "../Program.module.css";
 import styles from "./FileExplorer.module.css";
+import DirectoryTreeView from "./DirectoryTreeView";
+import EditFileUrlDialog from "./EditFileUrlDialog";
+import { useDirectoryNavigation } from "./hooks";
 import { useFileExplorerController } from "./hooks/useFileExplorerController";
 
 type FileExplorerProps = {
@@ -11,9 +15,13 @@ type FileExplorerProps = {
   rootDirectory?: DirectoryItem;
   onDirectoryChange?: (directory: DirectoryItem) => void;
   onFilesystemChange?: () => void;
+  programState?: PersistedProgramState;
+  onProgramStateChange?: (nextState: PersistedProgramState) => void;
 };
 
 const DEFAULT_ROOT_LABEL = "Desktop";
+const TREE_COLLAPSED_PATHS_KEY = "treeCollapsedPaths";
+const SIDEBAR_COLLAPSED_KEY = "sidebarCollapsed";
 
 const findDirectoryPath = (
   rootDirectory: DirectoryItem,
@@ -43,38 +51,36 @@ function FileExplorer({
   rootDirectory,
   onDirectoryChange,
   onFilesystemChange,
+  programState,
+  onProgramStateChange,
 }: FileExplorerProps) {
   const {
     editingItem,
+    fileUrlEditingItem,
     buildFileExplorerMenuItems,
     handleEditingSubmit,
     handleEditingCancel,
+    handleCancelFileUrlEditing,
+    handleSubmitFileUrlEditing,
   } = useFileExplorerController({
     directoryItem,
+    rootDirectory,
     onFilesystemChange,
   });
 
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
-  const [navigationHistory, setNavigationHistory] = useState<DirectoryItem[]>([directoryItem]);
-  const [navigationIndex, setNavigationIndex] = useState(0);
-
-  useEffect(() => {
-    const current = navigationHistory[navigationIndex];
-
-    if (current === directoryItem) {
-      return;
-    }
-
-    const existingIndex = navigationHistory.findIndex((directory) => directory === directoryItem);
-
-    if (existingIndex >= 0) {
-      setNavigationIndex(existingIndex);
-      return;
-    }
-
-    setNavigationHistory([directoryItem]);
-    setNavigationIndex(0);
-  }, [directoryItem, navigationHistory, navigationIndex]);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(() => {
+    return programState?.[SIDEBAR_COLLAPSED_KEY] === true;
+  });
+  const {
+    canGoBack,
+    canGoForward,
+    navigateToDirectory,
+    goBack,
+    goForward,
+  } = useDirectoryNavigation({
+    currentDirectory: directoryItem,
+    onNavigate: onDirectoryChange,
+  });
 
   const currentDirectoryPath = useMemo(() => {
     if (!rootDirectory) {
@@ -97,69 +103,46 @@ function FileExplorer({
       : rootLabel;
   }, [currentDirectoryPath, rootDirectory]);
 
-  const childDirectories = useMemo(() => {
-    return directoryItem.children.filter(isDirectoryItem);
-  }, [directoryItem]);
-  const canGoBack = navigationIndex > 0;
-  const canGoForward = navigationIndex < navigationHistory.length - 1;
+  const initialCollapsedPaths = useMemo(() => {
+    const persistedValue = programState?.[TREE_COLLAPSED_PATHS_KEY];
 
-  const navigateToDirectory = (nextDirectory: DirectoryItem, pushToHistory: boolean) => {
-    if (nextDirectory === directoryItem) {
-      return;
+    if (!Array.isArray(persistedValue)) {
+      return undefined;
     }
 
-    if (pushToHistory) {
-      setNavigationHistory((previousHistory) => {
-        const nextHistory = previousHistory.slice(0, navigationIndex + 1);
-        nextHistory.push(nextDirectory);
-        return nextHistory;
+    return persistedValue
+      .filter((path): path is unknown[] => Array.isArray(path))
+      .map((path) => path.filter((segment): segment is string => typeof segment === "string"));
+  }, [programState]);
+
+  const handleCollapsedPathsChange = (paths: string[][]) => {
+    onProgramStateChange?.({
+      ...(programState ?? {}),
+      [TREE_COLLAPSED_PATHS_KEY]: paths,
+    });
+  };
+
+  const handleToggleSidebar = () => {
+    setIsSidebarCollapsed((current) => {
+      const nextValue = !current;
+
+      onProgramStateChange?.({
+        ...(programState ?? {}),
+        [SIDEBAR_COLLAPSED_KEY]: nextValue,
       });
-      setNavigationIndex((previousIndex) => previousIndex + 1);
-    }
 
-    onDirectoryChange?.(nextDirectory);
-  };
-
-  const handleBack = () => {
-    if (!canGoBack) {
-      return;
-    }
-
-    const previousIndex = navigationIndex - 1;
-    const previousDirectory = navigationHistory[previousIndex];
-
-    if (!previousDirectory) {
-      return;
-    }
-
-    setNavigationIndex(previousIndex);
-    onDirectoryChange?.(previousDirectory);
-  };
-
-  const handleForward = () => {
-    if (!canGoForward) {
-      return;
-    }
-
-    const nextIndex = navigationIndex + 1;
-    const nextDirectory = navigationHistory[nextIndex];
-
-    if (!nextDirectory) {
-      return;
-    }
-
-    setNavigationIndex(nextIndex);
-    onDirectoryChange?.(nextDirectory);
+      return nextValue;
+    });
   };
 
   return (
     <ProgramSurface className={programStyles.programParent} getContextMenuItems={buildFileExplorerMenuItems}>
       <div className={styles.explorerRoot}>
-        <div className={styles.toolbar}>
+        <div className={styles.toolbar} data-context-menu-disabled="true">
           <button
             type="button"
             className={styles.toolbarButton}
-            onClick={() => setIsSidebarCollapsed((current) => !current)}
+            onClick={handleToggleSidebar}
             aria-label={isSidebarCollapsed ? "Expand navigation pane" : "Collapse navigation pane"}
           >
             {isSidebarCollapsed ? ">>" : "<<"}
@@ -167,7 +150,7 @@ function FileExplorer({
           <button
             type="button"
             className={styles.toolbarButton}
-            onClick={handleBack}
+            onClick={goBack}
             disabled={!canGoBack}
             aria-label="Back"
           >
@@ -176,13 +159,13 @@ function FileExplorer({
           <button
             type="button"
             className={styles.toolbarButton}
-            onClick={handleForward}
+            onClick={goForward}
             disabled={!canGoForward}
             aria-label="Forward"
           >
             &gt;
           </button>
-          
+
           <div className={styles.pathBar} title={windowsPath}>
             {windowsPath}
           </div>
@@ -191,40 +174,23 @@ function FileExplorer({
         <div className={styles.mainArea}>
           {!isSidebarCollapsed ? (
             <aside className={styles.sidebar}>
-              <h3 className={styles.sidebarSectionTitle}>Tasks</h3>
-              <button
-                type="button"
-                className={styles.sidebarLink}
-                onClick={() => rootDirectory && navigateToDirectory(rootDirectory, true)}
-                disabled={!rootDirectory || rootDirectory === directoryItem}
-              >
-                Desktop
-              </button>
-
-              <h3 className={styles.sidebarSectionTitle}>Folders</h3>
-              {childDirectories.length === 0 ? (
-                <div className={styles.sidebarEmptyText}>No subfolders in this directory.</div>
-              ) : (
-                <div className={styles.sidebarLinksList}>
-                  {childDirectories.map((childDirectory, index) => (
-                    <button
-                      key={`${childDirectory.name}-${index}`}
-                      type="button"
-                      className={styles.sidebarLink}
-                      onClick={() => navigateToDirectory(childDirectory, true)}
-                    >
-                      {childDirectory.name}
-                    </button>
-                  ))}
-                </div>
-              )}
+              <DirectoryTreeView
+                rootDirectory={rootDirectory ?? directoryItem}
+                currentDirectory={directoryItem}
+                onDirectorySelect={navigateToDirectory}
+                initialCollapsedPaths={initialCollapsedPaths}
+                onCollapsedPathsChange={handleCollapsedPathsChange}
+                editingItem={editingItem}
+                onEditingSubmit={handleEditingSubmit}
+                onEditingCancel={handleEditingCancel}
+              />
             </aside>
           ) : null}
 
           <div className={styles.childrenGrid}>
             <FileSystemItemGrid
               items={directoryItem.children}
-              onDirectoryOpen={(nextDirectory) => navigateToDirectory(nextDirectory, true)}
+              onDirectoryOpen={(nextDirectory) => navigateToDirectory(nextDirectory)}
               editingItem={editingItem}
               onEditingSubmit={handleEditingSubmit}
               onEditingCancel={handleEditingCancel}
@@ -232,6 +198,14 @@ function FileExplorer({
           </div>
         </div>
       </div>
+
+      <EditFileUrlDialog
+        isOpen={Boolean(fileUrlEditingItem)}
+        fileName={fileUrlEditingItem?.name ?? ""}
+        initialUrl={fileUrlEditingItem?.url ?? ""}
+        onSubmit={handleSubmitFileUrlEditing}
+        onCancel={handleCancelFileUrlEditing}
+      />
     </ProgramSurface>
   );
 }

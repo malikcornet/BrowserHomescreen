@@ -1,4 +1,5 @@
 import type { DirectoryItem } from "@entities/filesystem/model";
+import type { PersistedProgramState } from "@features/persistence";
 import styles from "./Desktop.module.css";
 import FileSystemItemGrid from "./FileSystemItemGrid";
 import { WindowManager } from "@features/window-manager";
@@ -11,6 +12,8 @@ type DesktopProps = {
   initialWindows?: FileExplorerWindow[];
   onFilesystemChange?: () => void;
   onWindowsChange?: (windows: FileExplorerWindow[]) => void;
+  fileExplorerProgramState?: PersistedProgramState;
+  onFileExplorerProgramStateChange?: (nextState: PersistedProgramState) => void;
 };
 
 function Desktop({
@@ -18,6 +21,8 @@ function Desktop({
   initialWindows,
   onFilesystemChange,
   onWindowsChange,
+  fileExplorerProgramState,
+  onFileExplorerProgramStateChange,
 }: DesktopProps) {
   const {
     windowManagerRef,
@@ -53,6 +58,8 @@ function Desktop({
         initialWindows={initialWindows}
         onWindowsChange={onWindowsChange}
         onFilesystemChange={handleFilesystemChange}
+        fileExplorerProgramState={fileExplorerProgramState}
+        onFileExplorerProgramStateChange={onFileExplorerProgramStateChange}
       />
     </div>
   );

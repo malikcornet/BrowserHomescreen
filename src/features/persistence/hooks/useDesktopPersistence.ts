@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import type { DirectoryItem } from "@entities/filesystem/model";
 import type { FileExplorerWindow } from "@features/window-manager/windowing";
 import { createDefaultRootDirectory } from "@data";
@@ -20,8 +20,8 @@ export function useDesktopPersistence() {
   const [initialWindows, setInitialWindows] = useState<FileExplorerWindow[] | undefined>(undefined);
   const [filesystemVersion, setFilesystemVersion] = useState(0);
   const [windowsSnapshot, setWindowsSnapshot] = useState<FileExplorerWindow[] | null>(null);
+  const [programsState, setProgramsState] = useState<Record<string, PersistedProgramState>>({});
   const [isReady, setIsReady] = useState(false);
-  const programsRef = useRef<Record<string, PersistedProgramState>>({});
 
   useEffect(() => {
     let didCancel = false;
@@ -37,7 +37,7 @@ export function useDesktopPersistence() {
         if (!persistedState || persistedState.version !== DESKTOP_STATE_VERSION) {
           setRootDirectory(createDefaultRootDirectory());
           setInitialWindows(undefined);
-          programsRef.current = {};
+          setProgramsState({});
           setIsReady(true);
 
           return;
@@ -48,7 +48,7 @@ export function useDesktopPersistence() {
 
         setRootDirectory(hydratedRootDirectory);
         setInitialWindows(hydrateFileExplorerWindows(persistedExplorerWindows, hydratedRootDirectory));
-        programsRef.current = persistedState.programs;
+        setProgramsState(persistedState.programs);
         setIsReady(true);
       } catch {
         if (didCancel) {
@@ -57,7 +57,7 @@ export function useDesktopPersistence() {
 
         setRootDirectory(createDefaultRootDirectory());
         setInitialWindows(undefined);
-        programsRef.current = {};
+        setProgramsState({});
         setIsReady(true);
       }
     };
@@ -70,16 +70,17 @@ export function useDesktopPersistence() {
   }, []);
 
   useEffect(() => {
-    if (!isReady || !rootDirectory || !windowsSnapshot) {
+    if (!isReady || !rootDirectory) {
       return;
     }
 
     const timeoutId = window.setTimeout(() => {
+      const fileExplorerWindows = windowsSnapshot ?? initialWindows ?? [];
       const nextPrograms = {
-        ...programsRef.current,
+        ...programsState,
         [FILE_EXPLORER_PROGRAM_ID]: {
-          ...(programsRef.current[FILE_EXPLORER_PROGRAM_ID] ?? {}),
-          windows: serializeFileExplorerWindows(windowsSnapshot, rootDirectory),
+          ...(programsState[FILE_EXPLORER_PROGRAM_ID] ?? {}),
+          windows: serializeFileExplorerWindows(fileExplorerWindows, rootDirectory),
         },
       };
 
@@ -89,14 +90,13 @@ export function useDesktopPersistence() {
         programs: nextPrograms,
       };
 
-      programsRef.current = nextPrograms;
       void savePersistedDesktopState(nextState);
     }, SAVE_DEBOUNCE_MS);
 
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [filesystemVersion, isReady, rootDirectory, windowsSnapshot]);
+  }, [filesystemVersion, initialWindows, isReady, programsState, rootDirectory, windowsSnapshot]);
 
   const handleFilesystemChange = useCallback(() => {
     setFilesystemVersion((version) => version + 1);
@@ -106,11 +106,32 @@ export function useDesktopPersistence() {
     setWindowsSnapshot(windows);
   }, []);
 
+  const getProgramState = useCallback((programId: string): PersistedProgramState | undefined => {
+    return programsState[programId];
+  }, [programsState]);
+
+  const setProgramState = useCallback((programId: string, nextState: PersistedProgramState) => {
+    setProgramsState((previousProgramsState) => ({
+      ...previousProgramsState,
+      [programId]: nextState,
+    }));
+  }, []);
+
   return useMemo(() => ({
     isReady,
     rootDirectory,
     initialWindows,
     handleFilesystemChange,
     handleWindowsChange,
-  }), [handleFilesystemChange, handleWindowsChange, initialWindows, isReady, rootDirectory]);
+    getProgramState,
+    setProgramState,
+  }), [
+    getProgramState,
+    handleFilesystemChange,
+    handleWindowsChange,
+    initialWindows,
+    isReady,
+    rootDirectory,
+    setProgramState,
+  ]);
 }

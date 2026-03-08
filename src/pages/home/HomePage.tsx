@@ -1,5 +1,5 @@
 import { Desktop } from "@features/desktop";
-import { useDesktopPersistence } from "@features/persistence";
+import { FILE_EXPLORER_PROGRAM_ID, useDesktopPersistence, type PersistedProgramState } from "@features/persistence";
 import { TaskBar } from "@features/taskbar";
 import styles from "./HomePage.module.css";
 
@@ -10,7 +10,15 @@ function HomePage() {
     initialWindows,
     handleFilesystemChange,
     handleWindowsChange,
+    getProgramState,
+    setProgramState,
   } = useDesktopPersistence();
+
+  const fileExplorerProgramState = getProgramState(FILE_EXPLORER_PROGRAM_ID);
+
+  const handleFileExplorerProgramStateChange = (nextState: PersistedProgramState) => {
+    setProgramState(FILE_EXPLORER_PROGRAM_ID, nextState);
+  };
 
   if (!isReady || !rootDirectory) {
     return <div className={styles.homePage} />;
@@ -23,6 +31,8 @@ function HomePage() {
         initialWindows={initialWindows}
         onFilesystemChange={handleFilesystemChange}
         onWindowsChange={handleWindowsChange}
+        fileExplorerProgramState={fileExplorerProgramState}
+        onFileExplorerProgramStateChange={handleFileExplorerProgramStateChange}
       />
       <TaskBar />
     </div>

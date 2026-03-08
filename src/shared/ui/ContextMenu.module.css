@@ -1,63 +1,80 @@
 .contextMenu {
   position: fixed;
-  min-width: 190px;
-  max-width: 290px;
-  background: #f2f3f8;
-  border: 1px solid #7f86a3;
+  min-width: 196px;
+  max-width: 300px;
+  background: #f1efe2;
+  border: 1px solid #3b4e79;
   box-shadow:
     inset 1px 1px 0 #ffffff,
-    inset -1px -1px 0 #b9bfd1,
-    2px 3px 0 rgb(45 49 72 / 26%);
-  padding: 3px;
+    inset -1px -1px 0 #7f95c6,
+    0 8px 18px rgb(18 31 60 / 40%);
+  padding: 2px;
   z-index: 2000;
-  font-family: Tahoma, "MS Sans Serif", sans-serif;
+  font-family: Tahoma, "Trebuchet MS", "MS Sans Serif", sans-serif;
 }
 
 .contextMenu::before {
   content: "";
   position: absolute;
-  left: 3px;
-  top: 3px;
-  bottom: 3px;
-  width: 24px;
-  background: linear-gradient(180deg, #edf1fb 0%, #d8deef 100%);
-  border-right: 1px solid #bcc6df;
+  left: 2px;
+  top: 2px;
+  bottom: 2px;
+  width: 28px;
+  background:
+    linear-gradient(180deg, #f6f8ff 0%, #d9e2f8 46%, #c9d6f4 100%),
+    repeating-linear-gradient(
+      0deg,
+      rgb(126 153 205 / 32%) 0,
+      rgb(126 153 205 / 32%) 1px,
+      rgb(255 255 255 / 0%) 1px,
+      rgb(255 255 255 / 0%) 4px
+    );
+  border-right: 1px solid #a8b9df;
   pointer-events: none;
 }
 
 .menuItem {
   width: 100%;
-  border: 0;
+  border: 1px solid transparent;
   background: transparent;
-  color: #000000;
+  color: #101010;
   text-align: left;
-  padding: 3px 10px 3px 31px;
-  font-family: Tahoma, "MS Sans Serif", sans-serif;
+  padding: 3px 10px 3px 35px;
+  font-family: Tahoma, "Trebuchet MS", "MS Sans Serif", sans-serif;
   font-size: 11px;
-  line-height: 1.45;
+  line-height: 1.4;
   cursor: pointer;
 }
 
 .menuItem:hover:not(:disabled) {
-  background: linear-gradient(180deg, #9aa7ce 0%, #707ba7 100%);
+  border-color: #355a99;
+  background: linear-gradient(180deg, #4476d0 0%, #2f63bb 48%, #2757ab 100%);
   color: #ffffff;
+  text-shadow: 0 1px 0 rgb(9 20 45 / 60%);
+}
+
+.menuItem:active:not(:disabled) {
+  border-color: #224884;
+  background: linear-gradient(180deg, #2a5fb7 0%, #4a80d8 100%);
 }
 
 .menuItem:disabled {
-  color: #8d8d8d;
+  color: #858585;
   cursor: default;
 }
 
 .separator {
   height: 1px;
-  margin: 3px 3px 3px 31px;
-  background: #c6cbda;
+  margin: 3px 2px 3px 35px;
+  background: #b3bfd9;
+  box-shadow: 0 1px 0 #ffffff;
 }
 
 .menuItemDanger {
-  color: #9b2020;
+  color: #991a1a;
 }
 
 .menuItemDanger:hover:not(:disabled) {
-  background: linear-gradient(180deg, #e08f9d 0%, #bf5f72 100%);
+  border-color: #98384b;
+  background: linear-gradient(180deg, #d4687f 0%, #b84961 100%);
 }
