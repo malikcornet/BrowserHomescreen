@@ -1,0 +1,12 @@
+.childrenGrid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(86px, 86px));
+	grid-auto-rows: 96px;
+	gap: 0;
+	align-content: start;
+	justify-content: start;
+	padding: 8px;
+	box-sizing: border-box;
+	height: 100%;
+	overflow: auto;
+}

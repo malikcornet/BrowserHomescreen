@@ -25,12 +25,8 @@ const rootDirectory: DirectoryItem = new DirectoryItem("/", [
 function Screen() {
   return (
     <div className={ComponentStyle.screen}>
-      <main className={ComponentStyle.desktopArea}>
-        <Desktop rootDirectory={rootDirectory} />
-      </main>
-      <footer className={ComponentStyle.taskbarArea}>
-        <TaskBar />
-      </footer>
+      <Desktop rootDirectory={rootDirectory} />
+      <TaskBar />
     </div>
   );
 }

@@ -1,0 +1,159 @@
+.window {
+	position: absolute;
+	top: 24px;
+	left: 24px;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	border-top: 2px solid #ffffff;
+	border-left: 2px solid #ffffff;
+	border-right: 2px solid #404040;
+	border-bottom: 2px solid #404040;
+	background: #c0c0c0;
+	box-shadow:
+		inset 1px 1px 0 #dfdfdf,
+		inset -1px -1px 0 #808080;
+}
+
+.titleBar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	height: 28px;
+	padding: 0 4px 0 8px;
+	background: linear-gradient(90deg, #000080 0%, #1084d0 100%);
+	color: #ffffff;
+	cursor: grab;
+	user-select: none;
+}
+
+.titleBarDragging {
+	cursor: grabbing;
+}
+
+.title {
+	font-family: "MS Sans Serif", "Tahoma", sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	letter-spacing: 0.2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.windowControls {
+	display: flex;
+	align-items: center;
+	gap: 2px;
+}
+
+.controlButton {
+	width: 20px;
+	height: 20px;
+	border-top: 1px solid #ffffff;
+	border-left: 1px solid #ffffff;
+	border-right: 1px solid #404040;
+	border-bottom: 1px solid #404040;
+	background: #c0c0c0;
+	color: #000000;
+	font-family: "MS Sans Serif", "Tahoma", sans-serif;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 1;
+	padding: 0;
+	display: grid;
+	place-items: center;
+	user-select: none;
+}
+
+.controlButton:active {
+	border-top: 1px solid #404040;
+	border-left: 1px solid #404040;
+	border-right: 1px solid #ffffff;
+	border-bottom: 1px solid #ffffff;
+}
+
+.content {
+	flex: 1;
+	border-top: 2px solid #808080;
+	border-left: 2px solid #808080;
+	border-right: 2px solid #ffffff;
+	border-bottom: 2px solid #ffffff;
+	background: #ffffff;
+	color: #000000;
+	font-family: "MS Sans Serif", "Tahoma", sans-serif;
+	font-size: 13px;
+}
+
+.resizeHandle {
+	position: absolute;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	z-index: 4;
+}
+
+.resizeHandleN {
+	top: -2px;
+	left: 10px;
+	right: 10px;
+	height: 8px;
+	cursor: n-resize;
+}
+
+.resizeHandleS {
+	bottom: -2px;
+	left: 10px;
+	right: 10px;
+	height: 8px;
+	cursor: s-resize;
+}
+
+.resizeHandleE {
+	top: 10px;
+	right: -2px;
+	bottom: 10px;
+	width: 8px;
+	cursor: e-resize;
+}
+
+.resizeHandleW {
+	top: 10px;
+	left: -2px;
+	bottom: 10px;
+	width: 8px;
+	cursor: w-resize;
+}
+
+.resizeHandleNE {
+	top: -2px;
+	right: -2px;
+	width: 12px;
+	height: 12px;
+	cursor: ne-resize;
+}
+
+.resizeHandleNW {
+	top: -2px;
+	left: -2px;
+	width: 12px;
+	height: 12px;
+	cursor: nw-resize;
+}
+
+.resizeHandleSE {
+	right: -2px;
+	bottom: -2px;
+	width: 12px;
+	height: 12px;
+	cursor: se-resize;
+}
+
+.resizeHandleSW {
+	left: -2px;
+	bottom: -2px;
+	width: 12px;
+	height: 12px;
+	cursor: sw-resize;
+}

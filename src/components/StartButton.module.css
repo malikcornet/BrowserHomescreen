@@ -1,0 +1,52 @@
+.startButton {
+	height: 30px;
+	margin: 2px;
+	padding: 4px;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: #c0c0c0;
+	color: #000;
+	border-top: 2px solid #fff;
+	border-left: 2px solid #fff;
+	border-right: 2px solid #404040;
+	border-bottom: 2px solid #404040;
+	box-shadow: inset -1px -1px 0 #808080;
+	font-family: "MS Sans Serif", "Tahoma", sans-serif;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.startButton:hover {
+	filter: brightness(0.98);
+}
+
+.startButton:active {
+	border-top: 2px solid #404040;
+	border-left: 2px solid #404040;
+	border-right: 2px solid #fff;
+	border-bottom: 2px solid #fff;
+	box-shadow: inset 1px 1px 0 #808080;
+	padding: 3px 7px 1px 7px;
+}
+
+.startButton:focus-visible {
+	outline: 1px dotted #000;
+	outline-offset: -5px;
+}
+
+.logo {
+	width: 24px;
+	height: 24px;
+}
+
+.label {
+	font-family: "MS Sans Serif", "Microsoft Sans Serif", "Tahoma", sans-serif;
+	font-size: 14px;
+	font-weight: 700;
+	line-height: 1;
+	margin-top: -1px;
+	letter-spacing: 0.1px;
+}

@@ -1,0 +1,28 @@
+.taskbar {
+  flex: 0 0 30px;
+  background-color: #c0c0c0;
+  display: flex;
+  align-items: center;
+}
+
+.taskBand,
+.systemTray {
+  height: 100%;
+}
+
+.taskBand {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+}
+
+.systemTray {
+    flex: 0 0 100px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
