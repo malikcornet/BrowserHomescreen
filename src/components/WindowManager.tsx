@@ -1,4 +1,12 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef, useState, type MouseEvent } from "react";
+import {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type MouseEvent,
+} from "react";
 import { DirectoryItem } from "../models/directoryitem";
 import styles from "./Desktop.module.css";
 import Window, { type ResizeDirection, type WindowRect } from "./Window";
@@ -15,7 +23,6 @@ export type WindowManagerHandle = {
 type FileExplorerWindow = {
   id: number;
   directory: DirectoryItem;
-  title: string;
   rect: WindowRect;
 };
 
@@ -46,7 +53,6 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
     {
       id: 1,
       directory: rootDirectory,
-      title: getExplorerTitle(rootDirectory),
       rect: { x: 24, y: 24, width: 420, height: 320 },
     },
   ]);
@@ -107,7 +113,6 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
     const newWindow: FileExplorerWindow = {
       id: nextWindowIdRef.current,
       directory,
-      title: getExplorerTitle(directory),
       rect: clampRectToRegion({
         x: 24 + offset,
         y: 24 + offset,
@@ -119,6 +124,27 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
     nextWindowIdRef.current += 1;
     setOpenWindows((currentWindows) => [...currentWindows, newWindow]);
   };
+
+  const updateFileExplorerDirectory = useCallback((id: number, directory: DirectoryItem) => {
+    setOpenWindows((currentWindows) => {
+      let changed = false;
+
+      const nextWindows = currentWindows.map((windowItem) => {
+        if (windowItem.id !== id || windowItem.directory === directory) {
+          return windowItem;
+        }
+
+        changed = true;
+
+        return {
+          ...windowItem,
+          directory,
+        };
+      });
+
+      return changed ? nextWindows : currentWindows;
+    });
+  }, []);
 
   useImperativeHandle(ref, () => ({
     openFileExplorer,
@@ -318,7 +344,7 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
       {openWindows.map((windowItem, index) => (
         <Window
           key={windowItem.id}
-          title={windowItem.title}
+          title={getExplorerTitle(windowItem.directory)}
           frame={{
             zIndex: index + 1,
             position: { x: windowItem.rect.x, y: windowItem.rect.y },
@@ -332,7 +358,10 @@ const WindowManager = forwardRef<WindowManagerHandle, WindowManagerProps>(functi
             onResizeMouseDown: (direction, event) => handleResizeMouseDown(windowItem.id, direction, event),
           }}
         >
-          <FileExplorer directoryItem={windowItem.directory} />
+          <FileExplorer
+            directoryItem={windowItem.directory}
+            onDirectoryChange={(nextDirectory) => updateFileExplorerDirectory(windowItem.id, nextDirectory)}
+          />
         </Window>
       ))}
     </div>
