@@ -1,5 +1,5 @@
-import { useCallback, useRef } from "react";
-import type { DirectoryItem } from "@entities/filesystem/model";
+import { useCallback, useRef, useState } from "react";
+import type { DirectoryItem, FileItem } from "@entities/filesystem/model";
 import type { ContextMenuItem } from "@shared/ui";
 import type { WindowManagerHandle } from "@features/window-manager";
 import type { ProgramContextMenuRequest } from "@features/programs";
@@ -13,6 +13,8 @@ const DESKTOP_MENU_ID = {
   deleteItem: "desktop-delete-item",
   newFolder: "desktop-new-folder",
   newFile: "desktop-new-file",
+  separatorEdit: "desktop-separator-edit",
+  editFileUrl: "desktop-edit-file-url",
 } as const;
 
 type UseDesktopControllerArgs = {
@@ -29,11 +31,31 @@ export function useDesktopController({ rootDirectory, onFilesystemChange }: UseD
     handleCancelEditing,
     handleStartEditing,
     handleCreateDirectoryAndEditIn,
+    handleCreateFileAndEditIn,
     handleDeleteItem,
+    handleUpdateFileUrl,
   } = useFilesystemEditing({
     directory: rootDirectory,
     onFilesystemChange,
   });
+  const [fileUrlEditingItem, setFileUrlEditingItem] = useState<FileItem | null>(null);
+
+  const handleEditFileUrl = useCallback((item: FileItem) => {
+    setFileUrlEditingItem(item);
+  }, []);
+
+  const handleCancelFileUrlEditing = useCallback(() => {
+    setFileUrlEditingItem(null);
+  }, []);
+
+  const handleSubmitFileUrlEditing = useCallback((nextUrl: string) => {
+    if (!fileUrlEditingItem) {
+      return;
+    }
+
+    handleUpdateFileUrl(fileUrlEditingItem, nextUrl);
+    setFileUrlEditingItem(null);
+  }, [fileUrlEditingItem, handleUpdateFileUrl]);
 
   const buildDesktopMenuItems = useCallback((context: ProgramContextMenuRequest): ContextMenuItem[] => {
     return buildFilesystemContextMenuItems({
@@ -43,8 +65,17 @@ export function useDesktopController({ rootDirectory, onFilesystemChange }: UseD
       onStartRename: handleStartEditing,
       onDeleteItem: handleDeleteItem,
       onCreateDirectory: handleCreateDirectoryAndEditIn,
+      onCreateFile: handleCreateFileAndEditIn,
+      onEditFileUrl: handleEditFileUrl,
     });
-  }, [handleCreateDirectoryAndEditIn, handleDeleteItem, handleStartEditing, rootDirectory]);
+  }, [
+    handleCreateDirectoryAndEditIn,
+    handleCreateFileAndEditIn,
+    handleDeleteItem,
+    handleEditFileUrl,
+    handleStartEditing,
+    rootDirectory,
+  ]);
 
   const handleDirectoryOpen = useCallback((directory: DirectoryItem) => {
     windowManagerRef.current?.openFileExplorer(directory);
@@ -53,10 +84,13 @@ export function useDesktopController({ rootDirectory, onFilesystemChange }: UseD
   return {
     windowManagerRef,
     editingItem,
+    fileUrlEditingItem,
     buildDesktopMenuItems,
     handleDirectoryOpen,
     handleEditingSubmit: handleSubmitEditing,
     handleEditingCancel: handleCancelEditing,
+    handleCancelFileUrlEditing,
+    handleSubmitFileUrlEditing,
     handleFilesystemChange,
   };
 }

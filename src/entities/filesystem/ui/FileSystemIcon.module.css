@@ -18,6 +18,15 @@
   image-rendering: auto;
 }
 
+.iconImagePixelated {
+  width: 48px;
+  height: 48px;
+  object-fit: fill;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: none;
+}
+
 .iconLabel {
   margin: 0;
   max-width: 100%;

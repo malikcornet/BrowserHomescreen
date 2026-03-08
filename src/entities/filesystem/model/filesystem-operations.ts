@@ -1,7 +1,7 @@
 import { DirectoryItem } from "./directory-item";
-import { FileItem } from "./file-item";
+import { DEFAULT_FILE_ICON, FileItem } from "./file-item";
 import type { FileSystemItemBase, FileSystemItemKind } from "./filesystem-item";
-import { isFileItem } from "./filesystem-utils";
+import { getFaviconUrlForFileUrl, isFileItem } from "./filesystem-utils";
 
 export const NEW_FOLDER_BASE_NAME = "New Folder";
 export const NEW_FILE_BASE_NAME = "New File";
@@ -153,6 +153,7 @@ export const updateFileUrl = (
   }
 
   targetItem.url = normalizedUrl;
+  targetItem.icon = getFaviconUrlForFileUrl(normalizedUrl) ?? DEFAULT_FILE_ICON;
 
   return targetItem;
 };

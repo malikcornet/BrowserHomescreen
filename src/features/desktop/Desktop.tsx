@@ -6,6 +6,7 @@ import { WindowManager } from "@features/window-manager";
 import { ProgramSurface } from "@features/programs";
 import type { FileExplorerWindow } from "@features/window-manager/windowing";
 import { useDesktopController } from "./hooks/useDesktopController";
+import EditFileUrlDialog from "@features/programs/file-explorer/EditFileUrlDialog";
 
 type DesktopProps = {
   rootDirectory: DirectoryItem;
@@ -27,10 +28,13 @@ function Desktop({
   const {
     windowManagerRef,
     editingItem,
+    fileUrlEditingItem,
     buildDesktopMenuItems,
     handleDirectoryOpen,
     handleEditingSubmit,
     handleEditingCancel,
+    handleCancelFileUrlEditing,
+    handleSubmitFileUrlEditing,
     handleFilesystemChange,
   } = useDesktopController({ rootDirectory, onFilesystemChange });
 
@@ -60,6 +64,14 @@ function Desktop({
         onFilesystemChange={handleFilesystemChange}
         fileExplorerProgramState={fileExplorerProgramState}
         onFileExplorerProgramStateChange={onFileExplorerProgramStateChange}
+      />
+
+      <EditFileUrlDialog
+        isOpen={Boolean(fileUrlEditingItem)}
+        fileName={fileUrlEditingItem?.name ?? ""}
+        initialUrl={fileUrlEditingItem?.url ?? ""}
+        onSubmit={handleSubmitFileUrlEditing}
+        onCancel={handleCancelFileUrlEditing}
       />
     </div>
   );

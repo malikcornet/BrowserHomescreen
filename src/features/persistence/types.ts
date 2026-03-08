@@ -8,6 +8,7 @@ export type SerializedFileItem = {
   kind: "file";
   name: string;
   url: string;
+  icon?: string;
 };
 
 export type SerializedDirectoryItem = {

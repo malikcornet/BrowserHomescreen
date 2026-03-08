@@ -8,6 +8,8 @@ import {
 } from "@features/programs";
 import styles from "./FileSystemIcon.module.css";
 
+const AUTO_FAVICON_PREFIX = "https://www.google.com/s2/favicons";
+
 type FileSystemIconProps = {
   fileSystemItem: FileSystemItemBase;
   onDoubleClick?: React.MouseEventHandler<HTMLDivElement>;
@@ -26,6 +28,8 @@ function FileSystemIcon({
   onEditingCancel,
 }: FileSystemIconProps) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const isAutoFavicon =
+    fileSystemItem.kind === "file" && fileSystemItem.icon.startsWith(AUTO_FAVICON_PREFIX);
 
   useEffect(() => {
     if (!isEditing) {
@@ -76,7 +80,7 @@ function FileSystemIcon({
       onMouseDown={handleMouseDown}
     >
       <img
-        className={styles.iconImage}
+        className={`${styles.iconImage} ${isAutoFavicon ? styles.iconImagePixelated : ""}`.trim()}
         src={fileSystemItem.icon}
         alt={`${fileSystemItem.name} icon`}
       />

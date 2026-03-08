@@ -19,6 +19,7 @@ const serializeFilesystemItem = (item: FileSystemItemBase): SerializedFilesystem
       kind: "file",
       name: item.name,
       url: item.url,
+      icon: item.icon,
     };
   }
 
@@ -26,6 +27,7 @@ const serializeFilesystemItem = (item: FileSystemItemBase): SerializedFilesystem
     kind: "file",
     name: item.name,
     url: "",
+    icon: item.icon,
   };
 };
 
@@ -37,7 +39,7 @@ const deserializeFilesystemItem = (item: SerializedFilesystemItem): FileSystemIt
     );
   }
 
-  return new FileItem(item.name, item.url);
+  return new FileItem(item.name, item.url, item.icon);
 };
 
 export const serializeDirectoryTree = (rootDirectory: DirectoryItem): SerializedDirectoryItem => {

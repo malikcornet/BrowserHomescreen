@@ -1,6 +1,7 @@
 export { DirectoryItem } from "./directory-item";
 export { FileItem } from "./file-item";
 export {
+  getFaviconUrlForFileUrl,
   getFileSystemItemKey,
   isDirectoryItem,
   isFileItem,
