@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&family=Nunito:wght@500;700;800&display=swap");
+
 html,
 body,
 #root {
@@ -5,20 +7,20 @@ body,
 }
 
 :root {
-	--xp-accent-1: #8e97c5;
-	--xp-accent-2: #6f79ab;
-	--xp-accent-3: #596293;
-	--xp-silver-1: #f4f5fb;
-	--xp-silver-2: #dee2f0;
-	--xp-silver-3: #c2c8dc;
-	--xp-silver-4: #9ca5c0;
-	--xp-taskbar-top: #cfd4e5;
-	--xp-taskbar-bottom: #9ca5c0;
-	--xp-window-border: #747d9f;
-	--xp-window-frame: #d9deed;
-	--xp-text: #23283a;
-	--xp-glow-pink: #efc9f6;
-	--xp-glow-cyan: #c9ebff;
+	--play-sky-top: #ffe4bc;
+	--play-sky-mid: #ffc5a0;
+	--play-sky-bottom: #ff916e;
+	--play-sun: #ffcb6e;
+	--play-cloud: #fff8ec;
+	--play-violet: #f08ab2;
+	--play-blueberry: #d46b7c;
+	--play-coral: #ff8262;
+	--play-mint: #7ae39f;
+	--play-ink: #582a39;
+	--play-text: #4a2532;
+	--play-soft-white: #fff6ea;
+	--play-window: #fff8ef;
+	--play-shadow: rgb(115 60 67 / 26%);
 }
 
 * {
@@ -28,7 +30,37 @@ body,
 }
 
 body {
-	font-family: Tahoma, "Segoe UI", "Trebuchet MS", sans-serif;
-	color: var(--xp-text);
-	background: #2f6ea7;
+	font-family: "Nunito", "Trebuchet MS", sans-serif;
+	color: var(--play-text);
+	background:
+		radial-gradient(circle at 10% 16%, rgb(255 237 167 / 72%) 0%, rgb(255 237 167 / 0%) 24%),
+		radial-gradient(circle at 86% 20%, rgb(255 197 148 / 64%) 0%, rgb(255 197 148 / 0%) 25%),
+		linear-gradient(180deg, var(--play-sky-top) 0%, var(--play-sky-mid) 45%, var(--play-sky-bottom) 100%);
+	background-attachment: fixed;
+}
+
+button,
+input,
+textarea {
+	font: inherit;
+}
+
+@keyframes floatBubbles {
+	0%,
+	100% {
+		transform: translateY(0);
+	}
+	50% {
+		transform: translateY(-4px);
+	}
+}
+
+@keyframes twinkle {
+	0%,
+	100% {
+		opacity: 0.7;
+	}
+	50% {
+		opacity: 1;
+	}
 }

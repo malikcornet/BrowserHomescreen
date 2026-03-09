@@ -2,13 +2,15 @@
   --icon-size: 48px;
   height: 86px;
   width: 86px;
-  padding: 4px 4px 6px;
+  padding: 6px 4px 6px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
   gap: 4px;
   user-select: none;
   cursor: default;
+  border-radius: 12px;
+  transition: transform 140ms ease, background-color 140ms ease, box-shadow 140ms ease;
 }
 
 .iconImage {
@@ -16,6 +18,7 @@
   height: var(--icon-size);
   object-fit: contain;
   image-rendering: auto;
+  filter: drop-shadow(0 3px 3px rgb(123 66 76 / 24%));
 }
 
 .iconImagePixelated {
@@ -30,39 +33,47 @@
 .iconLabel {
   margin: 0;
   max-width: 100%;
-  padding: 1px 5px 2px;
-  color: #f9fbff;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
-  font-size: 12px;
+  padding: 2px 8px;
+  color: #ffffff;
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   line-height: 1.2;
   text-align: center;
-  text-shadow: 0 1px 1px rgb(26 30 48 / 62%);
+  text-shadow: 0 1px 0 rgb(126 55 67 / 62%);
   word-break: break-word;
-  border-radius: 2px;
+  border-radius: 999px;
 }
 
 .iconLabelInput {
   width: 100%;
   margin: 0;
-  padding: 1px 5px 2px;
-  border: 1px solid #1f3f8f;
-  border-radius: 2px;
-  color: #0a1d4a;
+  padding: 2px 6px;
+  border: 1px solid #dd9f93;
+  border-radius: 8px;
+  color: #7a3850;
   background: #ffffff;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
-  font-size: 12px;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
   line-height: 1.2;
   text-align: center;
   box-sizing: border-box;
 }
 
 .iconLabelInput:focus {
-  outline: 1px solid #86b4ff;
+  outline: 2px solid #ffaf52;
   outline-offset: 0;
 }
 
+.icon:hover {
+  transform: translateY(-2px);
+  background: rgb(255 255 255 / 18%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 42%);
+}
+
 .icon:hover .iconLabel {
-  background: linear-gradient(180deg, rgb(173 182 216 / 95%) 0%, rgb(118 129 168 / 95%) 100%);
-  outline: 1px solid rgb(245 248 255 / 75%);
+  background: linear-gradient(180deg, rgb(255 192 120 / 95%) 0%, rgb(242 131 94 / 95%) 100%);
+  outline: 1px solid rgb(255 224 198 / 90%);
   outline-offset: -1px;
 }

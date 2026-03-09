@@ -1,8 +1,9 @@
 .programParent {
   height: 100%;
-    min-height: 100%;
-    min-width: 100%;
-    background:
-      radial-gradient(circle at 86% 10%, rgb(239 201 246 / 30%) 0%, rgb(239 201 246 / 0%) 42%),
-      linear-gradient(180deg, #f9faff 0%, #edf1fc 100%);
+  min-height: 100%;
+  min-width: 100%;
+  background:
+    radial-gradient(circle at 86% 10%, rgb(255 217 166 / 34%) 0%, rgb(255 217 166 / 0%) 42%),
+    radial-gradient(circle at 10% 82%, rgb(181 255 221 / 24%) 0%, rgb(181 255 221 / 0%) 36%),
+    linear-gradient(180deg, #f9fbff 0%, #edf3ff 100%);
 }

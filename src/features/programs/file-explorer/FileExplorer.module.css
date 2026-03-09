@@ -4,29 +4,33 @@
 	flex: 1;
 	min-height: 0;
 	height: 100%;
-	padding: 8px;
+	padding: 10px;
 	box-sizing: border-box;
-	gap: 6px;
+	gap: 8px;
 }
 
 .toolbar {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	padding: 6px;
-	border: 1px solid #9ea8c5;
-	background: linear-gradient(180deg, #f7f9ff 0%, #e6ebfb 100%);
-	box-shadow: inset 0 0 0 1px #ffffff;
+	gap: 7px;
+	padding: 8px;
+	border: 1px solid #e4a694;
+	border-radius: 11px;
+	background:
+		radial-gradient(circle at 18% -100%, rgb(255 255 255 / 72%) 0%, rgb(255 255 255 / 0%) 60%),
+		linear-gradient(180deg, #ffd8a8 0%, #ffb997 100%);
+	box-shadow: inset 0 0 0 1px rgb(255 255 255 / 52%);
 }
 
 .toolbarButton {
-	width: 26px;
-	height: 24px;
-	border: 1px solid #7f8db2;
-	background: linear-gradient(180deg, #ffffff 0%, #dbe4fa 100%);
-	color: #334064;
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 12px;
+	width: 28px;
+	height: 25px;
+	border: 1px solid #d28c84;
+	border-radius: 8px;
+	background: linear-gradient(180deg, #ffffff 0%, #ffefe3 100%);
+	color: #9e4e62;
+	font-family: "Nunito", "Trebuchet MS", sans-serif;
+	font-size: 13px;
 	font-weight: 700;
 	padding: 0;
 	line-height: 1;
@@ -34,7 +38,7 @@
 }
 
 .toolbarButton:active:not(:disabled) {
-	background: linear-gradient(180deg, #dbe4fa 0%, #ffffff 100%);
+	background: linear-gradient(180deg, #ffd7c5 0%, #fff4ec 100%);
 }
 
 .toolbarButton:disabled {
@@ -44,12 +48,14 @@
 .pathBar {
 	flex: 1;
 	min-width: 0;
-	padding: 4px 8px;
-	border: 1px solid #9ea8c5;
-	background: #ffffff;
-	color: #243355;
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 12px;
+	padding: 4px 10px;
+	border: 1px solid #e0a08f;
+	border-radius: 8px;
+	background: #fffefc;
+	color: #7f3c4f;
+	font-family: "Nunito", "Trebuchet MS", sans-serif;
+	font-size: 13px;
+	font-weight: 700;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -59,7 +65,7 @@
 	flex: 1;
 	min-height: 0;
 	display: flex;
-	gap: 6px;
+	gap: 8px;
 }
 
 .sidebar {
@@ -85,17 +91,19 @@
 	padding: 10px;
 	box-sizing: border-box;
 	overflow: auto;
-	border: 1px solid #9ca5c3;
+	border: 1px solid #e2ab98;
+	border-radius: 11px;
 	box-shadow:
-		inset 0 0 0 1px #ffffff,
-		inset 0 18px 14px -16px rgb(255 255 255 / 85%);
+		inset 0 0 0 1px rgb(255 255 255 / 45%),
+		inset 0 16px 14px -16px rgb(255 255 255 / 55%);
 	background:
-		radial-gradient(circle at 96% 4%, rgb(239 201 246 / 38%) 0%, rgb(239 201 246 / 0%) 32%),
-		linear-gradient(180deg, #fefeff 0%, #f4f6fd 100%),
+		radial-gradient(circle at 96% 4%, rgb(255 205 145 / 34%) 0%, rgb(255 205 145 / 0%) 34%),
+		radial-gradient(circle at 8% 12%, rgb(255 189 184 / 20%) 0%, rgb(255 189 184 / 0%) 36%),
+		linear-gradient(180deg, #fffdf9 0%, #fff2e5 100%),
 		repeating-linear-gradient(
 			0deg,
-			rgb(207 215 234 / 45%) 0,
-			rgb(207 215 234 / 45%) 1px,
+			rgb(243 194 169 / 18%) 0,
+			rgb(243 194 169 / 18%) 1px,
 			transparent 1px,
 			transparent 26px
 		);

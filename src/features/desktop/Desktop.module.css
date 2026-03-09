@@ -3,8 +3,38 @@
   flex: 1;
   width: 100%;
   min-height: 0;
-  background: #2f6ea7;
+  background:
+    radial-gradient(circle at 14% 12%, rgb(255 233 166 / 78%) 0%, rgb(255 233 166 / 0%) 24%),
+    radial-gradient(circle at 86% 28%, rgb(255 201 156 / 46%) 0%, rgb(255 201 156 / 0%) 22%),
+    radial-gradient(circle at 84% 84%, rgb(255 157 140 / 38%) 0%, rgb(255 157 140 / 0%) 28%),
+    linear-gradient(180deg, #ffe0b6 0%, #ffc093 52%, #ff8a69 100%);
   overflow: hidden;
+}
+
+.desktop::before,
+.desktop::after {
+  content: "";
+  position: absolute;
+  border-radius: 999px;
+  pointer-events: none;
+}
+
+.desktop::before {
+  width: 260px;
+  height: 260px;
+  left: -74px;
+  top: -92px;
+  background: radial-gradient(circle, rgb(255 255 255 / 72%) 0%, rgb(255 255 255 / 0%) 66%);
+  animation: floatBubbles 6s ease-in-out infinite;
+}
+
+.desktop::after {
+  width: 220px;
+  height: 220px;
+  right: -56px;
+  bottom: 52px;
+  background: radial-gradient(circle, rgb(255 168 138 / 36%) 0%, rgb(255 168 138 / 0%) 68%);
+  animation: floatBubbles 7s ease-in-out infinite reverse;
 }
 
 .programSurface {
@@ -22,30 +52,33 @@
   grid-template-rows: repeat(auto-fill, 96px);
   align-content: start;
   justify-content: start;
-  padding-top: 4px;
+  padding-top: 8px;
 }
 
 .activateWindowsWatermark {
   position: absolute;
-  right: 18px;
-  bottom: 48px;
+  right: 20px;
+  bottom: 56px;
   z-index: 1;
   text-align: right;
-  color: rgb(255 255 255 / 92%);
-  text-shadow: 0 1px 2px rgb(0 0 0 / 52%);
+  color: rgb(255 255 255 / 96%);
+  text-shadow: 0 2px 0 rgb(107 54 63 / 44%);
   pointer-events: none;
   user-select: none;
+  animation: twinkle 3.6s ease-in-out infinite;
 }
 
 .activateWindowsTitle {
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
-  font-size: 22px;
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
   line-height: 1.1;
 }
 
 .activateWindowsSubtitle {
   margin-top: 2px;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
-  font-size: 14px;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
   line-height: 1.2;
 }

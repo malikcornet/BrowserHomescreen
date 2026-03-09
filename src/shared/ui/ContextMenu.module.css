@@ -2,15 +2,15 @@
   position: fixed;
   min-width: 196px;
   max-width: 300px;
-  background: #f1efe2;
-  border: 1px solid #3b4e79;
+  background: #fff7ee;
+  border: 1px solid #cc8878;
   box-shadow:
     inset 1px 1px 0 #ffffff,
-    inset -1px -1px 0 #7f95c6,
-    0 8px 18px rgb(18 31 60 / 40%);
+    inset -1px -1px 0 #e0b2a0,
+    0 8px 18px rgb(87 37 53 / 34%);
   padding: 2px;
   z-index: 2000;
-  font-family: Tahoma, "Trebuchet MS", "MS Sans Serif", sans-serif;
+  font-family: "Nunito", "Trebuchet MS", "MS Sans Serif", sans-serif;
 }
 
 .contextMenu::before {
@@ -21,15 +21,15 @@
   bottom: 2px;
   width: 28px;
   background:
-    linear-gradient(180deg, #f6f8ff 0%, #d9e2f8 46%, #c9d6f4 100%),
+    linear-gradient(180deg, #fff4e4 0%, #ffe2cd 46%, #ffd1bf 100%),
     repeating-linear-gradient(
       0deg,
-      rgb(126 153 205 / 32%) 0,
-      rgb(126 153 205 / 32%) 1px,
+      rgb(231 166 132 / 30%) 0,
+      rgb(231 166 132 / 30%) 1px,
       rgb(255 255 255 / 0%) 1px,
       rgb(255 255 255 / 0%) 4px
     );
-  border-right: 1px solid #a8b9df;
+  border-right: 1px solid #e4b9a7;
   pointer-events: none;
 }
 
@@ -37,25 +37,25 @@
   width: 100%;
   border: 1px solid transparent;
   background: transparent;
-  color: #101010;
+  color: #5e2c3a;
   text-align: left;
   padding: 3px 10px 3px 35px;
-  font-family: Tahoma, "Trebuchet MS", "MS Sans Serif", sans-serif;
+  font-family: "Nunito", "Trebuchet MS", "MS Sans Serif", sans-serif;
   font-size: 11px;
   line-height: 1.4;
   cursor: pointer;
 }
 
 .menuItem:hover:not(:disabled) {
-  border-color: #355a99;
-  background: linear-gradient(180deg, #4476d0 0%, #2f63bb 48%, #2757ab 100%);
+  border-color: #d57f6f;
+  background: linear-gradient(180deg, #ffbe87 0%, #f79282 48%, #e66f84 100%);
   color: #ffffff;
-  text-shadow: 0 1px 0 rgb(9 20 45 / 60%);
+  text-shadow: 0 1px 0 rgb(117 42 53 / 62%);
 }
 
 .menuItem:active:not(:disabled) {
-  border-color: #224884;
-  background: linear-gradient(180deg, #2a5fb7 0%, #4a80d8 100%);
+  border-color: #ca6f6e;
+  background: linear-gradient(180deg, #f29f77 0%, #f7a08a 100%);
 }
 
 .menuItem:disabled {
@@ -66,7 +66,7 @@
 .separator {
   height: 1px;
   margin: 3px 2px 3px 35px;
-  background: #b3bfd9;
+  background: #e8c2ad;
   box-shadow: 0 1px 0 #ffffff;
 }
 

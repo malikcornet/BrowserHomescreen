@@ -5,13 +5,25 @@
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
-	border: 1px solid #6f789b;
-	border-radius: 8px 8px 0 0;
-	background: linear-gradient(180deg, #eef2ff 0%, #dce2f2 100%);
+	border: 1px solid #cf765b;
+	border-radius: 14px 14px 10px 10px;
+	background: linear-gradient(180deg, #fff9f0 0%, #ffe7d0 100%);
 	box-shadow:
-		inset 0 0 0 1px #f7f9ff,
-		0 0 0 1px #9ca6c4,
-		0 10px 22px rgb(38 47 79 / 34%);
+		inset 0 0 0 1px #ffffff,
+		0 0 0 1px #e9a78c,
+		0 14px 26px rgb(145 79 62 / 30%);
+	animation: windowPopIn 220ms cubic-bezier(0.15, 0.85, 0.23, 1) both;
+}
+
+@keyframes windowPopIn {
+	0% {
+		opacity: 0;
+		transform: translateY(8px) scale(0.98);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0) scale(1);
+	}
 }
 
 .titleBar {
@@ -19,25 +31,28 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 8px;
-	height: 30px;
-	padding: 0 6px 0 10px;
-	background: linear-gradient(180deg, #adb6d8 0%, #8f99c0 56%, #7681a8 100%);
+	height: 34px;
+	padding: 0 8px 0 12px;
+	background:
+		radial-gradient(circle at 20% -76%, rgb(255 255 255 / 70%) 0%, rgb(255 255 255 / 0%) 54%),
+		linear-gradient(180deg, #ffce8d 0%, #ffa578 56%, #f27f6e 100%);
 	color: #ffffff;
 	cursor: grab;
 	user-select: none;
 	position: relative;
-	border-bottom: 1px solid #636d8f;
+	border-bottom: 1px solid #cb6f57;
 }
 
 .titleBar::before {
 	content: "";
 	position: absolute;
-	left: 1px;
-	right: 1px;
+	left: 2px;
+	right: 2px;
 	top: 1px;
-	height: 45%;
+	height: 43%;
 	background: linear-gradient(180deg, rgb(255 255 255 / 55%) 0%, rgb(255 255 255 / 0%) 100%);
 	pointer-events: none;
+	border-radius: 999px;
 }
 
 .titleBarDragging {
@@ -45,10 +60,10 @@
 }
 
 .title {
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
-	font-size: 13px;
+	font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+	font-size: 17px;
 	font-weight: 700;
-	text-shadow: 0 1px 1px rgb(31 37 59 / 55%);
+	text-shadow: 0 1px 0 rgb(123 58 43 / 62%);
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -61,13 +76,13 @@
 }
 
 .controlButton {
-	width: 21px;
-	height: 19px;
-	border: 1px solid #69739a;
-	border-radius: 4px;
-	background: linear-gradient(180deg, #ffffff 0%, #dfe4f5 58%, #bcc5e0 100%);
-	color: #364062;
-	font-family: Tahoma, sans-serif;
+	width: 24px;
+	height: 21px;
+	border: 1px solid #da9670;
+	border-radius: 7px;
+	background: linear-gradient(180deg, #ffffff 0%, #fff0de 58%, #ffd7bc 100%);
+	color: #9a5037;
+	font-family: "Nunito", sans-serif;
 	font-size: 10px;
 	font-weight: 700;
 	line-height: 1;
@@ -79,25 +94,26 @@
 }
 
 .controlButton:active {
-	background: linear-gradient(180deg, #bcc5e0 0%, #dfe4f5 100%);
+	background: linear-gradient(180deg, #ffcdae 0%, #fff3e5 100%);
 	box-shadow: inset 0 1px 2px rgb(57 66 95 / 36%);
 }
 
 .windowControls .controlButton:last-child {
-	background: linear-gradient(180deg, #ffb7be 0%, #ea7e8a 58%, #cc5765 100%);
-	border-color: #91505a;
+	background: linear-gradient(180deg, #ffb5b6 0%, #ff8387 58%, #f5646a 100%);
+	border-color: #ca5d66;
 	color: #ffffff;
-	text-shadow: 0 1px 0 rgb(84 15 15 / 70%);
+	text-shadow: 0 1px 0 rgb(111 26 32 / 70%);
 }
 
 .content {
 	flex: 1;
 	min-height: 0;
 	display: flex;
-	border: 1px solid #9ba5c3;
-	background: linear-gradient(180deg, #ffffff 0%, #f1f4ff 100%);
+	border: 1px solid #e4aa84;
+	border-top: 0;
+	background: linear-gradient(180deg, #fffdf6 0%, #fff2df 100%);
 	color: #000000;
-	font-family: Tahoma, "Trebuchet MS", sans-serif;
+	font-family: "Nunito", "Trebuchet MS", sans-serif;
 	font-size: 13px;
 }
 

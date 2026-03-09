@@ -2,20 +2,20 @@
   list-style: none;
   margin: 0;
   padding: 4px;
-  border: 1px solid #7f95c4;
+  border: 1px solid #deac99;
   background:
-    linear-gradient(180deg, #fcfdff 0%, #edf3ff 100%),
+    linear-gradient(180deg, #fffaf4 0%, #ffeedf 100%),
     repeating-linear-gradient(
       0deg,
-      rgb(169 187 225 / 24%) 0,
-      rgb(169 187 225 / 24%) 1px,
+      rgb(246 192 164 / 14%) 0,
+      rgb(246 192 164 / 14%) 1px,
       transparent 1px,
       transparent 18px
     );
   box-shadow:
-    inset 1px 1px 0 #ffffff,
-    inset -1px -1px 0 #ccd8ef,
-    0 1px 0 rgb(255 255 255 / 70%);
+    inset 1px 1px 0 rgb(255 255 255 / 62%),
+    inset -1px -1px 0 #f3c6b3,
+    0 1px 0 rgb(246 214 193 / 30%);
 }
 
 .childrenList {
@@ -45,7 +45,7 @@
   top: -2px;
   bottom: -2px;
   width: 1px;
-  background: rgb(120 146 197 / 35%);
+  background: rgb(217 149 126 / 22%);
   pointer-events: none;
 }
 
@@ -57,21 +57,21 @@
 }
 
 .expanderButton {
-  border: 1px solid #6f88bc;
-  background: linear-gradient(180deg, #ffffff 0%, #dce7fb 100%);
-  color: #204171;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  border: 1px solid #d09086;
+  background: linear-gradient(180deg, #ffffff 0%, #ffe9db 100%);
+  color: #9a4d63;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
   padding: 0;
   box-shadow:
     inset 0 1px 0 #ffffff,
-    inset -1px -1px 0 #b8cbef;
+    inset -1px -1px 0 #edc1ad;
 }
 
 .expanderButton:active {
-  background: linear-gradient(180deg, #d7e3fa 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #ffd6c3 0%, #fff0e4 100%);
 }
 
 .labelButton {
@@ -79,10 +79,10 @@
   min-width: 0;
   border: 1px solid transparent;
   background: transparent;
-  color: #1d3258;
+  color: #7f3a4b;
   text-align: left;
   padding: 1px 6px;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   white-space: nowrap;
@@ -91,15 +91,15 @@
 }
 
 .labelButton:hover {
-  border-color: #8fa8d8;
-  background: linear-gradient(180deg, #e8efff 0%, #d6e3fd 100%);
+  border-color: #ebb18f;
+  background: linear-gradient(180deg, #ffd8ac 0%, #ffc08c 100%);
 }
 
 .labelButtonActive {
-  border-color: #2b58ad;
-  background: linear-gradient(180deg, #4f85dc 0%, #2d5fb8 100%);
+  border-color: #f8c39b;
+  background: linear-gradient(180deg, #ffb788 0%, #f38a65 100%);
   color: #ffffff;
-  text-shadow: 0 1px 0 rgb(11 27 58 / 55%);
+  text-shadow: 0 1px 0 rgb(129 56 66 / 72%);
 }
 
 .labelContent {
@@ -143,8 +143,8 @@
   flex: 1;
   min-width: 0;
   padding: 1px 6px;
-  color: #21385f;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  color: #874455;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
   font-size: 12px;
   line-height: 1.2;
   white-space: nowrap;
@@ -164,8 +164,8 @@
   width: 10px;
   height: 12px;
   flex: 0 0 10px;
-  border: 1px solid #7f8faf;
-  background: linear-gradient(180deg, #ffffff 0%, #ecf2ff 100%);
+  border: 1px solid #d59a7e;
+  background: linear-gradient(180deg, #ffffff 0%, #fff1df 100%);
   box-shadow: inset 0 1px 0 #ffffff;
 }
 
@@ -176,9 +176,9 @@
   top: -1px;
   width: 4px;
   height: 4px;
-  border-left: 1px solid #7f8faf;
-  border-bottom: 1px solid #7f8faf;
-  background: #d9e4fb;
+  border-left: 1px solid #d59a7e;
+  border-bottom: 1px solid #d59a7e;
+  background: #ffd9bf;
 }
 
 .treeEditInput {
@@ -186,15 +186,15 @@
   min-width: 0;
   height: 20px;
   box-sizing: border-box;
-  border: 1px solid #7f9db9;
-  background: #ffffff;
-  color: #102745;
-  font-family: Tahoma, "Trebuchet MS", sans-serif;
+  border: 1px solid #da9e92;
+  background: #fffdf9;
+  color: #7f3d4f;
+  font-family: "Nunito", "Trebuchet MS", sans-serif;
   font-size: 12px;
   padding: 1px 5px;
 }
 
 .treeEditInput:focus {
-  outline: 1px dotted #1a4fbb;
+  outline: 1px dotted #f39d73;
   outline-offset: -2px;
 }
